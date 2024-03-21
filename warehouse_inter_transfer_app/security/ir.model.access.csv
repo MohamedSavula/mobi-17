@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+warehouse_inter_transfer_app.access_inter_tranfer,access_inter_tranfer,warehouse_inter_transfer_app.model_inter_tranfer,base.group_user,1,1,1,1
+
+warehouse_inter_transfer_app.access_product_operations,access_product_operations,warehouse_inter_transfer_app.model_product_operations,base.group_user,1,1,1,1

@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+        <!--        # product.template-->
+        <record id="id_product_template_only_form_view_inherit_change_cost" model="ir.ui.view">
+            <field name="name">product_template_only_form_view_inherit_change_cost</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Cost Log">
+                        <field name="cost_change_ids">
+                            <tree delete="0" create="0" edit="0">
+                                <field name="cost_product_id"/>
+                                <field name="change_date"/>
+                                <field name="standard_price"/>
+                                <field name="cost_value"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_view_inherit_product_cost_form_inherit_change_cost" model="ir.ui.view">
+            <field name="name">view.inherit.cost.form.inherit_change_cost</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Cost Log">
+                        <field name="cost_change_ids">
+                            <tree delete="0" create="0" edit="0">
+                                <field name="cost_product_id"/>
+                                <field name="change_date"/>
+                                <field name="standard_price"/>
+                                <field name="cost_value"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_cost_log_tree" model="ir.ui.view">
+            <field name="name">view.tree</field>
+            <field name="model">cost.change</field>
+            <field name="arch" type="xml">
+                <tree string="Cost log">
+                    <field name="cost_product_id"/>
+                    <field name="change_date"/>
+                    <field name="standard_price"/>
+                    <field name="cost_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_cost_log_view" model="ir.actions.act_window">
+            <field name="name">Cost Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cost.change</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_cost_change_view"
+                  name="Cost Log"
+                  parent="stock.menu_stock_inventory_control"
+                  action="action_cost_log_view"
+                  sequence="100000"/>
+    </data>
+</odoo>

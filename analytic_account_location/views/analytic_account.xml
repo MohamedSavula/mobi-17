@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <!-- Inherit Search View to Modify it -->
+        <record id="id_view_account_analytic_account_search_inherit_add_project_code" model="ir.ui.view">
+            <field name="name">view_account_analytic_account_search_inherit_add_project_code</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="project_code"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_inherit_edit_account_analytic_account_form" model="ir.ui.view">
+            <field name="name">view.inherit.account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="project_code"/>
+                </xpath>
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button name="in_progres" string="In Progres" type="object" class="oe_highlight"
+                                invisible="state != 'draft'"/>
+                        <button name="invoiced" string="Invoiced" type="object" class="oe_highlight"
+                                invisible="state != 'in_progres'"/>
+                        <button name="locked" string="Locked" type="object" class="oe_highlight"
+                                invisible="state != 'invoiced'"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="wip_location_id" invisible="project_id == False"/>
+                    <field name="cost_location_id" invisible="project_id == False"/>
+                    <field name="expected_cost" invisible="project_id == False"/>
+                    <field name="planned_revenue" invisible="project_id == False"/>
+                    <field name="project_id" invisible="project_id == False"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_centione_create_po_form" model="ir.ui.view">
+        <field name="name">Centione Create PO</field>
+        <field name="model">centione.po</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="partner_id" options="{'no_create': True, 'no_open': True}"
+                           invisible="context.get('hide_single', False)"/>
+                    <field name="partner_ids" options="{'no_create': True, 'no_open': True}"
+                           invisible="context.get('hide_multiple', False)"/>
+
+                </group>
+                <footer>
+                    <button name="create_po" string="Confirm"
+                            invisible="context.get('single_po', False) or context.get('single_po', False) or context.get('cancel', False)"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- purchase request-->
+    <record id="create_po_action" model="ir.actions.act_window">
+        <field name="name">Create Purchase Order</field>
+        <field name="res_model">centione.po</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'hide_multiple':True}</field>
+        <field name="target">new</field>
+    </record>
+    <record id="create_rfq_action" model="ir.actions.act_window">
+        <field name="name">Create RFQ</field>
+        <field name="res_model">centione.po</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'hide_single':True}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_centione_create_po_lines_form" model="ir.ui.view">
+        <field name="name">Centione Create PO Lines</field>
+        <field name="model">centione.po.lines</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="purchase_request_id" invisible="True"/>
+                    <field name="partner_id" options="{'no_create': True, 'no_open': True}"
+                           invisible="context.get('hide_single', False)"/>
+                    <field name="partner_ids" options="{'no_create': True, 'no_open': True}"
+                           invisible="context.get('hide_multiple', False)"/>
+                    <field name="purchase_request_lines" options="{'no_create': True, 'no_open': True}"
+                           invisible="not context.get('single_po', False)"
+                           domain="[('state','=','approved'),('request_id','=',purchase_request_id)]"/>
+
+                </group>
+                <footer>
+                    <button name="create_po_lines" string="Confirm" invisible="not context.get('single_po', False)"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="create_rfq_lines_action_2" model="ir.actions.act_window">
+        <field name="name">Create Single RFQ</field>
+        <field name="res_model">centione.po.lines</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'hide_single':True,'single_po':True}</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

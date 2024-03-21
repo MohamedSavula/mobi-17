@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_delivery_request" model="ir.sequence">
+            <field name="name">Delivery Request</field>
+            <field name="code">centione.delivery.request</field>
+            <field name="prefix">RQ</field>
+            <field name="padding">4</field>
+        </record>
+
+    </data>
+</odoo>

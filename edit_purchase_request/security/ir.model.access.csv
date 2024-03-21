@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+edit_purchase_request.access_category_department,access_category_department,edit_purchase_request.model_category_department,base.group_user,1,1,1,1
+edit_purchase_request.access_category_approver,access_category_approver,edit_purchase_request.model_category_approver,base.group_user,1,1,1,1

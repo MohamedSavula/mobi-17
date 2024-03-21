@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        # purchase.request.line-->
+        <record id="view_pr_line_inherit_tree" model="ir.ui.view">
+            <field name="name">view.pr.line.inherit.tree</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_request_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="date_required" position="after">
+                    <field name="sub_qty" force_save="1"/>
+                </field>
+                <xpath expr="//field[@name='purchased_qty']" position="after">
+                    <field name="dest_location_id" string="Destination Location"/>
+                    <field name="pr_state"/>
+                    <field name="date_approved"/>
+                    <field name="lead_time"/>
+                    <field name="po_re_ids" string="Purchase Orders" widget="many2many_tags"/>
+                    <field name="representative_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # purchase.request-->
+        <record id="view_inherit_view_purchase_request_form0" model="ir.ui.view">
+            <field name="name">view.inherit.purchase.request.form</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='group_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[1]" position="replace">
+                    <field name="approve_1st_approver_ids" invisible="1"/>
+                    <field name="approve_2st_approver_ids" invisible="1"/>
+                    <field name="approve_3st_approver_ids" invisible="1"/>
+                    <field name="approve_4st_approver_ids" invisible="1"/>
+                    <field name="approve_5st_approver_ids" invisible="1"/>
+                    <button name="button_base_approver"
+                            string="Manager Approver"
+                            type="object"
+                            invisible="approve_base_approver == False or state in ['draft','done','rejected','base_approved','1st_approved','2st_approved','3st_approved','4st_approved','approved']"/>
+                    <button name="button_1st_approver"
+                            string="1st Approver"
+                            type="object"
+                            invisible=" &quot;approve_1st_approver_ids not in uid or state != 'base_approved'&quot;"/>
+                    <button name="to_approve_approver_back"
+                            string="Return To Be Approver"
+                            type="object"
+                            invisible="state != 'base_approved'"/>
+                    <button name="button_2st_approver"
+                            string="2nd Approver"
+                            type="object"
+                            invisible=" &quot;approve_2st_approver_ids not in uid or state != '1st_approved'&quot;"/>
+                    <button name="button_3st_approver"
+                            string="3rd Approver"
+                            type="object"
+                            invisible=" &quot;approve_3st_approver_ids not in uid or state != '2st_approved'&quot;"/>
+                    <button name="button_base_approver_back"
+                            string="Return Base "
+                            type="object"
+                            invisible=" &quot;approve_1st_approver_ids not in uid or state != '1st_approved'&quot;"/>
+                    <button name="button_1st_approver_back"
+                            string="Return 1st "
+                            type="object"
+                            invisible=" &quot;approve_2st_approver_ids not in uid or state != '2st_approved'&quot;"/>
+                    <button name="button_2st_approver_back"
+                            string="Return 2nd"
+                            type="object"
+                            invisible=" &quot;approve_3st_approver_ids not in uid or state != '3st_approved'&quot;"/>
+                    <button name="button_4st_approver"
+                            string="4th Approver"
+                            type="object"
+                            invisible=" &quot;approve_4st_approver_ids not in uid or state != '3st_approved'&quot;"/>
+                    <button name="button_3st_approver_back"
+                            string="Return 3rd"
+                            type="object"
+                            invisible=" &quot;approve_4st_approver_ids not in uid or state != '4st_approved'&quot;"/>
+                    <button name="button_4st_approver_back"
+                            string="Return 4th"
+                            type="object"
+                            invisible=" &quot;approve_5st_approver_ids not in uid or state != 'approved'&quot;"/>
+                    <button name="cancel_purchase_request"
+                            invisible="state in ['draft','done','rejected','cancel']"
+                            type="object" string="Cancel"/>
+                </xpath>
+                <xpath expr="//button[@name='button_approved']" position="replace">
+                    <button name="button_approved"
+                            string="Approve"
+                            type="object"
+                            class="oe_highlight"
+                            invisible=" &quot;approve_5st_approver_ids not in uid or state != '4st_approved'&quot;"/>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="sub_qty" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='purchase_state']" position="after">
+                    <field name="purchase_order_ids" string="Purchase Orders" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//field[@name='product_qty']" position="after">
+                    <field name="product_uom_id"/>
+                    <field name="analytic_account_id"/>
+                </xpath>
+                <xpath expr="//field[@name='description']" position="after">
+                    <field name="project_id" readonly="state != 'draft' and is_edit_user == False"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="department_id"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,to_approve,1st_approved,2st_approved,3st_approved,4st_approved,approved,done,rejected,cancel"
+                           statusbar_colors='{"approved":"blue"}'/>
+                </xpath>
+                <xpath expr="//field[@name='assigned_to']" position="after">
+                    <field name="approve_base_approver" invisible="1"/>
+                    <field name="approval_users" widget="many2many_tags" readonly="1"/>
+                    <field name="assign_to"/>
+                    <field name="is_edit_user" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='requested_by']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='assigned_to']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_start']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='department_id']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//page/field[@name='line_ids']" position="attributes">
+                    <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="is_expense" readonly="state != 'draft' and is_edit_user == False"/>
+                </xpath>
+                <xpath expr="//field[@name='requested_by']" position="before">
+                    <field name="is_pr_cash" readonly="state != 'draft' and is_edit_user == False"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/.." position="after">
+                    <page string="PR Cash Attachment" invisible="is_pr_cash == False">
+                        <group>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="attachments"/>
+                            <field name="attachments1"/>
+                            <field name="attachments2"/>
+                            <field name="attachments3"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <!--        # edit action purchase.request-->
+        <record id="purchase_request.purchase_request_line_form_action"
+                model="ir.actions.act_window">
+            <field name="domain">[('request_state','!=','draft'),('is_pr_cash','=',False)]</field>
+        </record>
+        <!--        # edit action purchase.request.line-->
+        <record id="purchase_request_line_cash_form_action"
+                model="ir.actions.act_window">
+            <field name="name">Purchase Request Lines (Cash)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.request.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('request_state','!=','draft'),('is_pr_cash','=',True)]</field>
+        </record>
+        <menuitem
+                id="menu_purchase_request_line_cash_act"
+                sequence="20"
+                parent="purchase_request.menu_purchase_request"
+                action="purchase_request_line_cash_form_action"
+        />
+        <!--        # stock.picking.type-->
+        <record id="view_inherit_picking_type_form" model="ir.ui.view">
+            <field name="name">view.inherit.picking.type.form</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[2]" position="after">
+                    <field name="is_expense"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # category.department-->
+        <record id="view_category_department_form" model="ir.ui.view">
+            <field name="name">view.category.department.form</field>
+            <field name="model">category.department</field>
+            <field name="arch" type="xml">
+                <form string="Departments">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="Categories">
+                                <field name="product_category_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Approvals">
+                                <group>
+                                    <group>
+                                        <field name="approve_1st_approver_ids" widget="many2many_tags"/>
+                                        <field name="approve_2st_approver_ids" widget="many2many_tags"/>
+                                        <field name="approve_3st_approver_ids" widget="many2many_tags"/>
+                                        <field name="approve_4st_approver_ids" widget="many2many_tags"/>
+                                        <field name="approve_5st_approver_ids" widget="many2many_tags"/>
+                                    </group>
+                                    <group></group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_category_department_view" model="ir.actions.act_window">
+            <field name="name">Departments</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">category.department</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_category_department_view"
+                  name="Departments"
+                  parent="stock.menu_product_in_config_stock"
+                  action="action_category_department_view"/>
+        <!--        # purchase.order-->
+        <record id="purchase_order_inherit_form" model="ir.ui.view">
+            <field name="name">purchase_order_inherit_form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_qty']" position="attributes">
+                    <attribute name="sum">total</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
+                    <field name="company_id"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='taxes_id']" position="after">
+                    <field name="last_purchase_price" readonly="1" force_save="1"/>
+                    <field name="difference" readonly="1" force_save="1"/>
+                    <field name="pm"/>
+                </xpath>
+                <xpath expr="//div[@name='reminder']" position="after">
+                    <xpath expr="//field[@name='origin']" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='incoterm_id']" position="before">
+                    <xpath expr="//field[@name='picking_type_id']" position="move"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # product.category-->
+        <record id="id_view_product_category_form_inherit" model="ir.ui.view">
+            <field name="name">product.category.form.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="category_department_ids" invisible="1"/>
+                    <field name="assigned_id_approver"/>
+                    <field name="manager_id" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # product.template-->
+        <record id="id_product_template_only_form_view_inherit_lpp" model="ir.ui.view">
+            <field name="name">product_template_only_form_view_inherit_lpp</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='detailed_type']" position="after">
+                    <field name="last_purchase_price" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="part_number"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # product.product-->
+        <record id="id_product_normal_form_view_inherit_lpp" model="ir.ui.view">
+            <field name="name">product_normal_form_view_inherit_lpp</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='detailed_type']" position="after">
+                    <field name="last_purchase_price" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="part_number"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

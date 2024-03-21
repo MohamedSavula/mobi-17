@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="id_power_configuration_action" model="ir.actions.act_window">
+        <field name="name">Power Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">power.configuration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <menuitem id="id_power_configuration_menu" parent="contacts.res_partner_menu_config" action="id_power_configuration_action" sequence="10"/>
+    <record id="id_vendor_type_action" model="ir.actions.act_window">
+        <field name="name">Vendor Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vendor.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <menuitem id="id_vendor_type_menu" parent="account.menu_finance_configuration" action="id_vendor_type_action" sequence="10"/>
+    <record id="id_partner_office_action" model="ir.actions.act_window">
+        <field name="name">Office</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">partner.office</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <menuitem id="id_partner_office_menu" parent="contacts.res_partner_menu_config" action="id_partner_office_action" sequence="11"/>
+    <record id="view_res_partner_order_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="job_position"/>
+            </xpath>
+            <xpath expr="//span[@name='address_name']" position="before">
+                <field name="arabic_name"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="fax"/>
+                <field name="tax_office"/>
+                <field name="power_configuration_id"/>
+                <field name="office_id"/>
+                <field name="vendor_type_id"/>
+                <field name="id" string="DB_ID"/>
+                <field name="vat" string="Tax Registration"/>
+                <field name="vat_number"/>
+                <field name="file_number"/>
+            </xpath>
+            <xpath expr="//group/group[2]" position="inside">
+                <field name="is_employee"/>
+            </xpath>
+            <xpath expr="//group[@name='container_row_2']" position="inside">
+                <group string="Petty Cash Holder">
+                    <field name="petty_cash_holder"/>
+                    <field name="journal_id" invisible="petty_cash_holder == False"/>
+                    <field name="petty_tax_registration" invisible="petty_cash_holder == False"/>
+                    <field name="petty_vat_number" invisible="petty_cash_holder == False"/>
+                    <field name="petty_file_number" invisible="petty_cash_holder == False"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='property_account_payable_id']" position="after">
+                <field name="contact_line_ids">
+                    <tree editable="bottom">
+                        <field name="account_id"/>
+                        <field name="is_approved"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_purchase_order_test_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[1]" position="after">
+                <field name="_1st_approver" invisible="1"/>
+                <field name="_2st_approver" invisible="1"/>
+                <field name="_3st_approver" invisible="1"/>
+                <field name="_4st_approver" invisible="1"/>
+                <field name="_5st_approver" invisible="1"/>
+                <field name="purchase_amount_user_id" invisible="1"/>
+                <button name="button_1st_approver" type="object" string="Request To Approve"
+                        invisible="state != 'draft'"/>
+                <button name="button_2st_approver" type="object" string="Approve"
+                        invisible="&quot;_1st_approver != uid or state != '1st_approve'&quot;"/>
+                <button name="button_3st_approver" type="object" string="Approve"
+                        invisible="&quot;_2st_approver != uid or state != '2st_approve'&quot;"/>
+                <button name="button_4st_approver" type="object" string="Approve"
+                        invisible="&quot;_3st_approver != uid or state != '3st_approve'&quot;"/>
+                <button name="button_5st_approver" type="object" string="Approve"
+                        invisible="&quot;_4st_approver != uid or state != '4st_approve'&quot;"/>
+            </xpath>
+            <xpath expr="//button[@id='draft_confirm']" position="replace">
+                <button name="button_confirm" type="object" string="Confirm Order" id="draft_confirm"
+                        invisible="state != 'confirm'"
+                        groups="mobi_admin_purchase_amount_approvl_level.group_button_confirm_purchase"/>
+                <button name="button_confirm" type="object" string="Confirm Order"
+                        invisible="&quot;_5st_approver != uid or state != '5st_approve'&quot;"/>
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="filted_purchase_log" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page invisible="0" string="Purchase Approval Log">
+                    <field name="purchase_review_log_ids" readonly="1">
+
+                        <tree>
+                            <field name="user_id"/>
+                            <field name="job_position"/>
+                            <field name="review_status" string="Approval status"/>
+                            <field name="date"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

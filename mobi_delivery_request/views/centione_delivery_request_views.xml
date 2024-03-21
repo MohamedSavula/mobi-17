@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="request_quotation_action" model="ir.actions.act_window">
+        <field name="name">Purchase Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.request.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <record id="id_centione_delivery_request_line_form" model="ir.ui.view">
+        <field name="name">Centione Delivery</field>
+        <field name="model">centione.delivery.request.line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="received_qty" string="Quantity"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="delivery_requests_view_form" model="ir.ui.view">
+        <field name="name">Delivery Request form view</field>
+        <field name="model">centione.delivery.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="is_approved" invisible="1"/>
+                    <field name="is_approved2" invisible="1"/>
+                    <button name="submit_request" string="Submit" type="object" invisible="state != 'draft'"
+                            class="btn-primary"/>
+                    <button name="first_approve" string="1st Approval"
+                            type="object"
+                            groups="mobi_delivery_request.group_1st_delivery_approval"
+                            class="btn-primary"
+                            invisible="state != 'first_approval'"/>
+                    <button name="second_approve" string="2nd Approval"
+                            type="object"
+                            groups="mobi_delivery_request.group_2nd_delivery_approval"
+                            class="btn-primary"
+                            invisible="state != 'second_approval'"/>
+                    <button name="third_approve" string="3rd Approval"
+                            type="object"
+                            groups="mobi_delivery_request.group_3rd_delivery_approval"
+                            class="btn-primary"
+                            invisible="state != 'third_approval'"/>
+                    <button name="%(products_category_approve_lines_action)d" string="Approve All"
+                            invisible="state != 'approved_by_manager'"
+                            type="action"
+                            class="btn-primary"/>
+                    <button name="%(create_transfer_request_lines_action)d" string="Transfer Request" invisible="1"
+                            type="action"
+                            groups="stock.group_stock_manager"
+                            class="btn-primary"/>
+                    <button name="%(create_centione_purchase_lines_action)d" string="Purchase Request" invisible="1"
+                            type="action"
+                            groups="stock.group_stock_manager"
+                            class="btn-primary"/>
+                    <button name="first_internal_approve" string="PM Approval" type="object"
+                            class="btn-primary"
+                            invisible="state != 'first_approval'"/>
+                    <button name="back_to_pm_approval"
+                            string="Return PM Approval" type="object"
+                            invisible="state != 'second_approval'"/>
+                    <button name="back_to_second_approve"
+                            string="Return Second Approval" type="object"
+                            invisible="state != 'third_approval'"/>
+                    <button name="finish_btn" string="Finish" type="object"
+                            invisible="state != 'receive'"/>
+                    <button name="cancel_request" string="Cancel" type="object"
+                            invisible="state not in ['first_approval','second_approval','third_approval']"/>
+                    <field name="state" widget="statusbar"/>
+                    <field name="current_user_id" invisible="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="delivery_transfers_action" type="object"
+                                invisible="transfer_count == 0"
+                                class="oe_stat_button" icon="fa-list">
+                            <field string="Transfers" name="transfer_count" widget="statinfo"/>
+                        </button>
+                        <button name="action_open_purchase_requests"
+                                invisible="purchase_requests_count == 0"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list"
+                                help="show the Purchase Requests for this Delivery Request">
+                            <field name="purchase_requests_count" widget="statinfo" string="Requests"/>
+                        </button>
+                        <button name="action_open_purchase_orders"
+                                invisible="purchase_order_count == 0"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list"
+                                help="show the Purchase Requests for this Delivery Request">
+                            <field name="purchase_order_count" widget="statinfo" string="Orders"/>
+                        </button>
+                        <button name="delivery_purchases_action" type="object"
+                                invisible="delivery_purchase_count == 0"
+                                class="oe_stat_button" icon="fa-list">
+                            <field string="Purchase Requests" name="delivery_purchase_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly='True'/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="employee_id" readonly="state != 'draft'"/>
+                        <field name="create_date" readonly='1'/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="is_internal"/>
+                        <field name="project_id" invisible="is_internal == True" readonly="state != 'draft'"
+                               required="is_internal == False"/>
+                        <field name="location_id" readonly="state != 'draft'"/>
+<!--                        <field name="account_analytic_account_id" domain="[('project_id', '=', False)]"-->
+<!--                               invisible="is_internal == False" readonly="state != 'draft'"-->
+<!--                               required="is_internal == True"/>-->
+                        <field name="internal_approval_id" invisible="is_internal == False" readonly="state != 'draft'"
+                               required="is_internal == True"/>
+                        <field name="user_id" invisible="1"/>
+                        <field name="picking_type_id" readonly="state != 'draft'"/>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="delivery_lines_ids" readonly="state != 'draft'">
+                                <tree editable="buttom">
+                                    <field name="product_id"/>
+                                    <field name="received_qty" readonly="1" force_save="1"/>
+                                    <field name="is_received" invisible="1"/>
+                                    <field name="transfer_qty_done" readonly="1" force_save="1"/>
+                                    <field name="difference" force_save="1"/>
+                                    <field name="rfq" readonly="1"/>
+                                    <field name="product_type" invisible="1"/>
+                                    <field name="is_pr" invisible="1"/>
+                                    <field name="qty"/>
+                                    <field name="on_hand" string="Qty On Hand"/>
+                                    <field name="uom_id"/>
+                                    <button name="action_open_line" string="Receive"
+                                            invisible="is_pr == False or (product_type == 'service' and is_received == True)"
+                                            type="object"/>
+                                    <field name="request_id" invisible="1"/>
+                                    <field name="is_manager" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="is_service" invisible="1"/>
+                                    <field name="is_approved2" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Cancel Reason">
+                            <field name="reason"/>
+                        </page>
+                        <page name="description" string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="delivery_request_view_tree" model="ir.ui.view">
+        <field name="name">Delivery Request tree view</field>
+        <field name="model">centione.delivery.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="employee_id"/>
+                <field name="delivery_lines_ids"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="delivery_request_action" model="ir.actions.act_window">
+        <field name="name">Delivery Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.delivery.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <record id="view_centione_delivery_request_line_tree" model="ir.ui.view">
+        <field name="name">centione.delivery.request.line.tree</field>
+        <field name="model">centione.delivery.request.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="qty"/>
+                <field name="uom_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem id="delivery_request_root_menu" name="Delivery Request"/>
+
+    <menuitem id="delivery_request_menu" name="Delivery Requests"
+              parent="delivery_request_root_menu" action="delivery_request_action"/>
+
+    <record id="delivery_request_line_action" model="ir.actions.act_window">
+        <field name="name">Delivery Request Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.delivery.request.line</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_delivery_request_line_view" name="Delivery Request Lines"
+              parent="mobi_delivery_request.delivery_request_root_menu"
+              action="delivery_request_line_action"/>
+</odoo>

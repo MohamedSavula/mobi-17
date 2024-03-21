@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="check_validate_to_ready_grp" model="res.groups">
+            <field name="name">Check Validate</field>
+        </record>
+        <record id="validate_to_ready_grp" model="res.groups">
+            <field name="name">Receipt Approval</field>
+        </record>
+        <!--        # stock.picking.type-->
+        <record id="view_inherit_picking_type_form" model="ir.ui.view">
+            <field name="name">view.inherit.picking.type.form</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Users">
+                            <field name="user_ids"/>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+        <!--        # stock.picking.type rule-->
+        <record id="id_stock_picking_type_rule" model="ir.rule">
+            <field name="name">Operations Types users</field>
+            <field name="model_id" ref="stock.model_stock_picking_type"/>
+            <field name="domain_force">['|',('user_ids','in', user.ids),('user_ids','=', False)]
+            </field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <!--        # stock picking-->
+        <record id="id_view_picking_form_inherit_accses" model="ir.ui.view">
+            <field name="name">stock.picking.form.accses</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_validate']" position="attributes">
+                    <attribute name="groups">accses_transfer.validate_to_ready_grp</attribute>
+                    <attribute name="invisible">state not in ['ready']</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_validate'][2]" position="attributes">
+                    <attribute name="groups">accses_transfer.validate_to_ready_grp</attribute>
+                    <attribute name="invisible">state not in ['ready']</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_validate']" position="after">
+                    <button name="mob_action_approve" type="object" string="Approve"
+                            invisible="state not in ['assigned']"
+                            groups="accses_transfer.check_validate_to_ready_grp"/>
+                    <button name="do_unreserve" string="Unreserve" groups="base.group_user" type="object"
+                            invisible="state not in ['ready']"
+                            data-hotkey="w"/>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

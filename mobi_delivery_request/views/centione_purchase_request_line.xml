@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_request_line_form" model="ir.ui.view">
+            <field name="name">Purchase Request Line Form</field>
+            <field name="model">centione.purchase.request.line</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Request Line">
+                    <header>
+                        <button name="%(create_po_action)d" string="Create PO from sister company"
+                                context="{'show_single': True}"
+                                type="action"
+                                invisible="type != 'sister' or state in ['cancel', 'done','draft']"
+                                groups="purchase.group_purchase_user"/>
+                        <button name="%(create_rfq_action)d" string="Create RFQ"
+                                type="action"
+                                invisible="type != 'normal' or state in ['cancel', 'done','draft']"
+                                groups="purchase.group_purchase_user"/>
+                        <button name="cancel_line" string="Cancel"
+                                type="object"
+                                invisible="state in ['cancel', 'done']"
+                                groups="purchase.group_purchase_user"/>
+                        <button name="manager_approve" string="Manager Approve"
+                                type="object"
+                                invisible="state in ['cancel', 'done','approved']"
+                                groups="mobi_delivery_request.group_purchase_request_manager"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_id"/>
+                                <field name="create_uid"/>
+                                <field name="type"/>
+                                <field name="qty"/>
+                                <field name="uom_id"/>
+                            </group>
+                            <group>
+                                <field name="planned_date"/>
+                                <field name="cost_price"/>
+                                <field name="notes"/>
+                                <field name="purchase_order_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_request_line_tree" model="ir.ui.view">
+            <field name="name">Purchase Request Line Tree</field>
+            <field name="model">centione.purchase.request.line</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request Line">
+                    <field name="product_id"/>
+                    <field name="create_uid"/>
+                    <field name="type"/>
+                    <field name="qty" sum="Total Qty"/>
+                    <field name="cost_price" sum="Total Cost" widget="monetary"/>
+                    <field name="uom_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_purchase_request_line" model="ir.actions.act_window">
+            <field name="name">Purchase Request Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">centione.purchase.request.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="id_menu_purchase_request_line" name="Purchase Request Lines"
+                  parent="purchase.menu_procurement_management" action="action_purchase_request_line" sequence="10"/>
+
+    </data>
+</odoo>

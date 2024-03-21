@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_can_create_analytic_account" model="res.groups">
+            <field name="name">Create Analytic Account</field>
+        </record>
+        <!--        # stock location analytic-->
+        <record id="id_view_location_form_inherit_analytic" model="ir.ui.view">
+            <field name="name">stock.location.form.analytic</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[2]" position='inside'>
+                    <field name="analytic_account_id" invisible="usage != 'inventory'"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # stock picking analytic-->
+        <record id="id_view_picking_form_inherit_analytic" model="ir.ui.view">
+            <field name="name">stock.picking.form.analytic</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="analytic_account_id"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_inherit_edit_project_form" model="ir.ui.view">
+            <field name="name">view.inherit.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="is_created_analytic" invisible="1"/>
+                    <button name="create_analytic_account" class="oe_highlight" type="object"
+                            string="Create Analytic Account"
+                            groups="analytic_account_location.group_can_create_analytic_account"
+                            invisible="is_created_analytic == True"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="purchase_amount_user_tree">
+            <field name="name">Purchase amount Approvl</field>
+            <field name="model">purchase.amount.user</field>
+            <field name="arch" type="xml">
+                <tree>
+<!--                    <field name="user_id"/>-->
+                    <field name="_1st_approver"/>
+                    <field name="_2st_approver"/>
+                    <field name="_3st_approver"/>
+                    <field name="_4st_approver"/>
+                    <field name="_5st_approver"/>
+                    <field name="amount_min"/>
+                    <field name="amount_max"/>
+                    <field name="currency_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="purchase_amount_user_form">
+            <field name="name">Purchase amount Approvl</field>
+            <field name="model">purchase.amount.user</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+<!--                                <field name="user_id"/>-->
+                                <field name="_1st_approver"/>
+                                <field name="_2st_approver"/>
+                                <field name="_3st_approver"/>
+                                <field name="_4st_approver"/>
+                                <field name="_5st_approver"/>
+                                <field name="amount_min"/>
+                                <field name="amount_max"/>
+                                <field name="currency_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="purchase_amount_user_act">
+            <field name="name">Purchase amount Approvl</field>
+            <field name="res_model">purchase.amount.user</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Purchase amount Approvl" id="purchase_amount_user_menu" parent="purchase.menu_purchase_config"
+              action="purchase_amount_user_act" sequence="4"/>
+    </data>
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- transfering request-->
+    <record id="create_transfer_request_action" model="ir.actions.act_window">
+        <field name="name">Internal Transfering</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.process.request</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'hide_sister': True, 'hide_purchase': True}</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+    <record id="create_centione_purchase_action" model="ir.actions.act_window">
+        <field name="name">Purchase Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.process.request</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'hide_sister': True, 'hide_internal': True}</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <record id="create_sister_purchase_action" model="ir.actions.act_window">
+        <field name="name">Sister Purchase Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.process.request</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'hide_internal': True, 'hide_purchase': True}</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <record id="view_centione_transfering_location_form" model="ir.ui.view">
+        <field name="name">Transfering/Purchase</field>
+        <field name="model">centione.process.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="location_id" invisible="1" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="location_dest_id" invisible="1" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="employee" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="requested_amount"/>
+                </group>
+                <footer>
+                    <button name="create_centione_transfer" string="Confirm" type="object" class="btn-primary"
+                            invisible="context.get('hide_internal', False)"/>
+                    <button name="create_centione_purchase" string="Confirm" type="object" class="btn-primary"
+                            invisible="context.get('hide_purchase', False)"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="receive_confirmation_action" model="ir.actions.act_window">
+        <field name="name">Receive Confirmation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">receive.confirmation</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <record id="receive_confirmation_form" model="ir.ui.view">
+        <field name="name">Receive Confirmation</field>
+        <field name="model">receive.confirmation</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="received_amount"/>
+
+                </group>
+                <footer>
+                    <button name="confirm_transferring" string="Confirm" type="object" class="btn-primary"/>
+
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

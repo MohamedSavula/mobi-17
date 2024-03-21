@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_centione_products_approve_lines_form" model="ir.ui.view">
+            <field name="name">Approving Lines</field>
+            <field name="model">products.category.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="delivery_request_line_ids" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <footer>
+                        <button name="approve_lines" string="Approve" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="products_category_approve_lines_action" model="ir.actions.act_window">
+            <field name="name">Approve Request Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">products.category.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

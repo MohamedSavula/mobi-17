@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="mail_delivery_request_submit_notification" model="mail.template">
+            <field name="name">Notification when a Delivery Request is submitted</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'mails_str' in ctx and ctx['mails_str']}</field>
+            <field name="subject">The delivery request ${object.name} is submitted .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_delivery_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]></field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+
+        <record id="mail_delivery_request_first_approve_notification" model="mail.template">
+            <field name="name">Notification when a Delivery Request is First Approved</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'mails_str' in ctx and ctx['mails_str']}</field>
+            <field name="subject">The delivery request ${object.name} is approved by employee manager .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_delivery_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]>
+            </field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+
+        <record id="mail_delivery_request_second_approve_notification" model="mail.template">
+            <field name="name">Notification when a Delivery Request is Second Approved</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'mails_str' in ctx and ctx['mails_str']}</field>
+            <field name="subject">The delivery request ${object.name} is approved   .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_delivery_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]></field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+        <record id="mail_delivery_request_third_approve_notification" model="mail.template">
+            <field name="name">Notification when a Delivery Request is Third Approved</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'mails_str' in ctx and ctx['mails_str']}</field>
+            <field name="subject">The delivery request ${object.name} is approved   .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_delivery_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]></field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+
+        <record id="mail_delivery_request_approve_notification" model="mail.template">
+            <field name="name">Notification to Warehouse manager when a Delivery request is confirmed by Manager</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'mails_str' in ctx and ctx['mails_str']}</field>
+            <field name="subject">The delivery request ${object.name} is confirmed by manager .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_delivery_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]></field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+
+        <record id="mail_purchase_request_created_notification" model="mail.template">
+            <field name="name">Notification to Procurement Team when Purchase Request is created by the Warehouse Manager</field>
+             <field name="email_from">${user.email}</field>
+            <field name="email_to">${'employee_used_case' in ctx and ctx['employee_used_case']}</field>
+            <field name="subject">The puchase request ${object.name} is created .</field>
+            <field name="model_id" ref="mobi_delivery_request.model_centione_purchase_request"/>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <p>Hello, </p>
+                    <p>Your are request to prepare below checklist.</p>
+                    <p>Check_Line:</p>
+                    <a href='${object.my_email()}' style='background-color: #8a2879;
+                                                          border: none;
+                                                          color: white;
+                                                          padding: 15px 32px;
+                                                          text-align: center;
+                                                          text-decoration: none;
+                                                          display: inline-block;
+                                                          font-size: 16px;
+                                                          margin: 4px 2px;
+                                                          cursor: pointer;'>
+                    ${object.name}
+                    </a>
+                    <br/>
+                    <p>Thank you!</p>
+                    <br/>
+                    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+                    <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+                    <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+                    </div>
+                    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+                        <span style="color: #222; margin-bottom: 5px; display: block; ">
+                        ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+                        </span>
+                        % if object.company_id.phone:
+                            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                                Phone:&nbsp; ${object.company_id.phone}
+                            </div>
+                        % endif
+                        % if object.company_id.website:
+                            <div>
+                                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                            </div>
+                        %endif
+                        <p></p>
+                    </div>
+                </div>
+            ]]></field>
+            <!--<field name="auto_delete" eval="True"/>-->
+        </record>
+
+
+
+
+    </data>
+</odoo>

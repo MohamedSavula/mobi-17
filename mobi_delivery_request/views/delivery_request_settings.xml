@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_delivery_request_settings_form" model="ir.ui.view">
+            <field name="name">delivery.request.settings.form</field>
+            <field name="model">delivery.request.settings</field>
+            <field name="arch" type="xml">
+                <form string="MODEL">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="picking_type_first_id"/>
+                            <field name="picking_type_second_id"/>
+                            <field name="picking_type_purchase_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_delivery_request_settings_action" model="ir.actions.act_window">
+            <field name="name">Delivery Request Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.request.settings</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">inline</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_delivery_request_root_config" name="Configurations"
+                  parent="mobi_delivery_request.delivery_request_root_menu"
+                  sequence="100"/>
+
+        <menuitem id="menu_delivery_request_config" name="Settings"
+                  parent="mobi_delivery_request.menu_delivery_request_root_config"
+                  action="view_delivery_request_settings_action" sequence="1"/>
+
+    </data>
+</odoo>

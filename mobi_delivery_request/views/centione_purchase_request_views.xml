@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_request_view_form" model="ir.ui.view">
+        <field name="name">Purchase Request form view</field>
+        <field name="model">centione.purchase.request</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <header>
+                    <button name="%(create_rfq_lines_action_2)d" string="Create RFQ" type="action"
+                            groups="purchase.group_purchase_user" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly='True'/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="create_date" readonly='True'/>
+                        <field name="origin" readonly='True'/>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="purchase_lines_ids" readonly="True">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="create_uid"/>
+                                    <field name="type"/>
+                                    <field name="qty"/>
+                                    <field name="uom_id"/>
+                                    <field name="cost_price"/>
+                                    <field name="planned_date"/>
+                                    <field name="notes"/>
+                                    <field name="purchase_order_ids" widget="many2many_tags"/>
+                                    <field name="state"/>
+                                    <button name="%(create_po_action)d" string="Create PO from sister company"
+                                            context="{'show_single': True}"
+                                            type="action"
+                                            invisible="type != 'sister' or state in ['cancel', 'done','draft']"
+                                            groups="purchase.group_purchase_user"/>
+                                    <button name="%(create_rfq_action)d" string="Create RFQ"
+                                            type="action"
+                                            invisible="type != 'normal' or state in ['cancel', 'done','draft']"
+                                            groups="purchase.group_purchase_user"/>
+                                    <button name="cancel_line" string="Cancel"
+                                            type="object"
+                                            invisible="state in ['cancel', 'done']"
+                                            groups="purchase.group_purchase_user"/>
+                                    <button name="manager_approve" string="Manager Approve"
+                                            type="object"
+                                            invisible="type != 'normal' or state in ['cancel', 'done','draft','approved']"
+                                            groups="mobi_delivery_request.group_purchase_request_manager"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_request_view_tree" model="ir.ui.view">
+        <field name="name">Purchase Request tree view</field>
+        <field name="model">centione.purchase.request</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="purchase_lines_ids"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_request_action" model="ir.actions.act_window">
+        <field name="name">Purchase Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">centione.purchase.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                <!-- More details about what a user can do with this object will be OK -->
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="purchase_request_menu" name="Purchase Requests"
+              parent="purchase.menu_procurement_management" action="purchase_request_action"/>
+
+</odoo>
