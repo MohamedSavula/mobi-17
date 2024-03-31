@@ -124,6 +124,7 @@
                     <field name="approval_users" widget="many2many_tags" readonly="1"/>
                     <field name="assign_to"/>
                     <field name="is_edit_user" invisible="1"/>
+                    <field name="stock_picking_type_ids" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="attributes">
                     <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
@@ -148,6 +149,9 @@
                 </xpath>
                 <xpath expr="//page/field[@name='line_ids']" position="attributes">
                     <attribute name="readonly">state != 'draft' and is_edit_user == False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="domain">[('id', 'in', stock_picking_type_ids)]</attribute>
                 </xpath>
                 <xpath expr="//field[@name='picking_type_id']" position="after">
                     <field name="is_expense" readonly="state != 'draft' and is_edit_user == False"/>

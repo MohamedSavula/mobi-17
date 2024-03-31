@@ -76,6 +76,8 @@ class PurchaseRequestInherit(models.Model):
     is_approve_4st_approver = fields.Boolean(compute="check_is_approve_4st_approver")
     approve_5st_approver_ids = fields.Many2many(related="department_id.approve_5st_approver_ids")
     is_approve_5st_approver = fields.Boolean(compute="check_is_approve_5st_approver")
+    stock_picking_type_ids = fields.Many2many(comodel_name="stock.picking.type", relation="stock_picking_type_ids",
+                                              column1="column1", column2="column2")
 
     @api.depends('name')
     def check_is_approve_1st_approver(self):
@@ -196,9 +198,9 @@ class PurchaseRequestInherit(models.Model):
                 rec.picking_type_id = self.env['stock.warehouse'].search([('name', '=', 'General Project')],
                                                                          limit=1).id or self.env.ref(
                     'stock.picking_type_in').id
-                return {'domain': {'picking_type_id': [('id', 'in', picking_type)]}}
+                rec.stock_picking_type_ids = picking_type
             elif not rec.is_expense:
-                return {'domain': {'picking_type_id': []}}
+                rec.stock_picking_type_ids = False
 
     @api.depends('date_approved', 'create_date')
     def compute_lead_time(self):
