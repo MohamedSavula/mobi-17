@@ -324,6 +324,7 @@ class PurchaseOrderInherit(models.Model):
     _inherit = 'purchase.order'
 
     po_request_id = fields.Many2one(comodel_name="purchase.request.line")
+    project_id = fields.Many2one(comodel_name="project.project", string="Project", tracking=True)
 
     def button_confirm(self):
         res = super(PurchaseOrderInherit, self).button_confirm()
