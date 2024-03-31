@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        # purchase order-->
+        <record id="id_view_purchase_order_form_inherit_project" model="ir.ui.view">
+            <field name="name">view_purchase_order_form_inherit_project</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="project_id"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # account journal-->
+        <record id="id_view_account_journal_form_inherit" model="ir.ui.view">
+            <field name="name">view_account_journal_form_inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group" position="inside">
+                    <field name="is_journal_reconcile"/>
+                </xpath>
+            </field>
+        </record>
+        <!--        # account payment-->
+        <record id="id_view_account_payment_form_inherit_add_context_name" model="ir.ui.view">
+            <field name="name">view_account_payment_form_inherit_add_context_name</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_open_invoices']" position="attributes">
+                    <attribute name="context">{'name_payment': name}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!--        # account move-->
+        <record id="id_view_move_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">view_purchase_order_form_inherit_project</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="width">100%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']"
+                       position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='analytic_distribution']"
+                       position="attributes">
+                    <attribute name="width">300%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="width">300%</attribute>
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_totals']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_totals']" position="after">
+                    <field name="total_withholding" invisible="1"/>
+                    <field name="total_untaxed_amount"/>
+                    <field name="total_price_withholding"/>
+                    <field name="total_price_vat"/>
+                    <field name="amount_tax"/>
+                    <field name="amount_total"/>
+                </xpath>
+                <xpath expr="//field[@name='tax_cash_basis_origin_move_id']" position="before">
+                    <field name="id" string="DB-ID"/>
+                    <field name="petty_cash_holder" invisible="1"/>
+                    <field name="project_id"/>
+                    <field name="sale_id" readonly="1" force_save="1"
+                           invisible="move_type not in ['out_invoice', 'out_refund']"/>
+                    <field name="purchase_custom_id" readonly="1" force_save="1"
+                           invisible="move_type not in ['in_invoice', 'in_refund']"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='name']" position="after">
+                    <field name="tax_registration"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           readonly="parent and parent.petty_cash_holder != True"
+                           optional="show"/>
+                    <field name="vat_number"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           readonly="parent and parent.petty_cash_holder != True"
+                           optional="show"/>
+                    <field name="file_number"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           readonly="parent and parent.petty_cash_holder != True"
+                           optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='price_unit']" position="before">
+                    <field name="price_withholding" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='product_id']" position="before">
+                    <field name="sale_id" force_save="1"
+                           column_invisible="parent and parent.move_type not in ['out_invoice', 'out_refund']"
+                           optional="show"/>
+                    <field name="partner_id" string="Customer" readonly="1" force_save="1"
+                           column_invisible="parent and parent.move_type not in ['out_invoice', 'out_refund']"/>
+                    <field name="purchase_order_id" force_save="1"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           optional="show"/>
+                    <field name="partner_id" string="Vendor" readonly="1" force_save="1"
+                           column_invisible="parent and (parent.move_type not in ['in_invoice', 'in_refund'] or parent.petty_cash_holder == True)"/>
+                    <field name="partner_name" string="Vendor"
+                           column_invisible="parent and (parent.move_type not in ['in_invoice', 'in_refund'] or parent.petty_cash_holder != True)"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree" position="inside">
+                    <field name="note_custom" required="0"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"/>
+                </xpath>
+                <xpath expr="//field[@name='account_id']" position="attributes">
+                    <attribute name="context"></attribute>
+                    <attribute name="domain"></attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='quantity']" position="before">
+                    <field name="account_ids" widget="many2many_tags" invisible="1"/>
+                    <field name="so_po_quantity" string="SO QTY"
+                           column_invisible="parent and parent.move_type not in ['out_invoice', 'out_refund']"
+                           optional="show"/>
+                    <field name="so_po_remaining" string="SO Remaining"
+                           column_invisible="parent and parent.move_type not in ['out_invoice', 'out_refund']"
+                           optional="show"/>
+                    <field name="so_po_quantity" string="PO QTY"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           optional="show"/>
+                    <field name="so_po_remaining" string="PO Remaining"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"
+                           optional="show"/>
+                </xpath>
+                <xpath expr="//group[@id='header_right_group']/field[@name='currency_id']" position="attributes">
+                    <attribute name="groups"></attribute>
+                </xpath>
+                <xpath expr="//group[@id='header_right_group']" position="inside">
+                    <field name="account_ids" invisible="1"/>
+                    <field name="account_id"
+                           invisible="move_type not in ['out_invoice', 'in_invoice', 'in_refund', 'out_refund']"
+                           required="move_type in ['out_invoice', 'in_invoice']"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='account_id']" position="before">
+                    <field name="is_account_asset" invisible="1"/>
+                    <field name="account_asset_id"
+                           column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='product_id']" position="attributes">
+                    <attribute name="readonly">is_account_asset == True</attribute>
+                    <attribute name="width">30%</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='name']" position="attributes">
+                    <attribute name="required">is_account_asset == True</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_view_invoice_tree_inherit_paid_amount" model="ir.ui.view">
+            <field name="name">view_invoice_tree_inherit_paid_amount</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total_signed']" position="after">
+                    <field name="paid_amount" optional="show"/>
+                    <field name="paid_amount_reconcile" optional="show"/>
+                    <field name="total_price_withholding" optional="show"/>
+                    <field name="total_price_vat" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

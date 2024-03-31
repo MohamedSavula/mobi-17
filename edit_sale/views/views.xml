@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record id="id_sale_order_view_form_inh_a" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.event.sale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="attention"/>
+                    <field name="is_fire_stock"/>
+                    <field name="partner_invoice_id"/>
+                    <field name="partner_shipping_id"/>
+                    <field name="project_id"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="before">
+                    <field name="currency_id"/>
+                    <field name="currency_rate" string="Rate"/>
+                </xpath>
+                <xpath expr="//group[2]" position="after">
+                    <group string=" ">
+                        <field name="reference_type"/>
+                        <field name="reference"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='name']"
+                       position="after">
+                    <field name="penetrant_size_diameter" readonly="is_fire_stock != True"/>
+                    <field name="side" readonly="is_fire_stock != True"/>
+                    <field name="is_fire_stock" invisible="1"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">Ordered QTY</attribute>
+                </xpath>
+                 <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                     <field name="solution" readonly="is_fire_stock != True"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

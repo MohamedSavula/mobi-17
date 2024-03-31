@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+        <record id="id_crm_lead_view_form_inh" model="ir.ui.view">
+            <field name="name">crm.lead.view.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="create_project_button"
+                            string="Create Project"
+                            type="object"
+                            invisible="project_id != False or create_project == False"/>
+                </xpath>
+                <xpath expr="//sheet/div[2]" position="inside">
+                    <h2 class="d-flex gap-2 g-0 align-items-end pb-3">
+                        <div invisible="type == 'lead'">
+                            <label for="expected_cost_la" class="oe_edit_only pb-1"/>
+                            <div class="d-flex align-items-end">
+                                <field name="expected_cost_la" readonly="is_won != False"/>
+                            </div>
+                        </div>
+                    </h2>
+
+                </xpath>
+                <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                    <attribute name="readonly">is_won != False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="sales_team_id" placeholder="Sales Team"/>
+                    <field name="project_id" placeholder="Project" readonly="1" force_save="1"/>
+                </xpath>
+                <xpath expr="//group[1]" position="after">
+                    <group>
+                        <group string=" ">
+                            <field name="reference_type"/>
+                            <field name="reference"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="is_won" invisible="1"/>
+                            <field name="create_project" invisible="is_won == False"/>
+                            <field name="reference_type"/>
+                            <field name="reference"/>
+                        </group>
+
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_project_form_custom" model="ir.ui.view">
+            <field name="name">project.project</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <field name="state" widget="statusbar"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="project_code"/>
+                    <xpath expr="//page[@name='settings']/group/group/field[@name='analytic_account_id']" position="move"/>
+                    <field name="analytic_plan_id"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags"/>
+                    <xpath expr="//field[@name='tag_ids']" position="move"/>
+                    <field name="expected_cost_analytic"/>
+                    <field name="planned_revenue_analytic"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='settings']" position="after">
+                    <page name="created_from_pipeline" string="Created From Pipeline">
+                        <group>
+                            <field name="is_crm_pipe" invisible="1"/>
+                            <field name="create_project"/>
+                            <field name="pipeline_name"/>
+                            <field name="expected_cost"/>
+                            <field name="planned_revenue"/>
+                            <field name="po_type"/>
+                            <field name="ref_po_type"/>
+                            <field name="start_date_po_type"/>
+                            <field name="end_date_po_type"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

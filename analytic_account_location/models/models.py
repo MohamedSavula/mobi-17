@@ -20,35 +20,6 @@ class StockPickingInherit(models.Model):
         string="Analytic Tags"
     )
 
-    # def _action_done(self):
-    #     date_done = self.date_done
-    #     res = super()._action_done()
-    #     self.write({'date_done': date_done})
-    #     return res
-    #
-    # def button_validate(self):
-    #     res = super().button_validate()
-    #     for rec in self:
-    #         if rec.date_done:
-    #             self.env['account.move'].search([('stock_move_id', '!=', False)]).filtered(
-    #                 lambda l: rec.name in l.ref).sudo().write({'date': rec.date_done.date()})
-    #     return res
-
-
-# class StockMoveInherit(models.Model):
-#     _inherit = 'stock.move'
-#
-#     date = fields.Datetime(
-#         'Date', index=True, required=False,
-#         states={'done': [('readonly', True)]}, related='picking_id.date_done', store=True,
-#         help="Move date: scheduled date until move is done, then date of actual move processing")
-
-
-# class StockMoveLineInherit(models.Model):
-#     _inherit = 'stock.move.line'
-#
-#     date = fields.Datetime('Date', required=False, related='picking_id.date_done', store=True)
-
 
 class AnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'

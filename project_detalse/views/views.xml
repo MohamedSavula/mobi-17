@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_account_analytic_account_project_tree" model="ir.ui.view">
+            <field name="name">Project Details</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="company_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="name" string="Name"/>
+                    <field name="code"/>
+                    <field name="partner_id"/>
+                    <field name="create_date" string="Creation Date"/>
+                    <field name="project_code"/>
+                    <field name="project_id"/>
+                    <field name="state" string="Project Status"/>
+                    <field name="wip_location_id"/>
+                    <field name="cost_location_id"/>
+                    <field name="plan_id"/>
+                    <field name="active" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="expected_cost" sum="Expected_cost"/>
+                    <field name="planned_revenue" sum="Planned_revenue"/>
+                    <field name="wib_balance" sum="wib_balance"/>
+                    <field name="actual_cost" sum="actual_cost"/>
+                    <field name="accrued_cost" sum="accrued_cost"/>
+                    <field name="actual_revenue" sum="actual_revenue"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="id_account_analytic_account_project" model="ir.actions.act_window">
+            <field name="name">Project Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.analytic.account</field>
+            <field name="view_id" ref="project_detalse.id_account_analytic_account_project_tree"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="id_account_analytic_account_project_menuitem" name="Project Details"
+                  parent="account.menu_finance_reports" action="project_detalse.id_account_analytic_account_project"
+                  sequence="10"/>
+
+        <record id="id_view_account_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">view_account_form_inherit_add_fields</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']//group/group" position="inside">
+                    <field name="is_wib"/>
+                    <field name="is_accrued"/>
+                    <field name="actual_revenue"/>
+                    <field name="is_actual"/>
+                    <field name="is_withholding"/>
+                    <field name="is_vat"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
