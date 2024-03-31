@@ -31,10 +31,15 @@
                 </xpath>
                 <xpath expr="//button[1]" position="replace">
                     <field name="approve_1st_approver_ids" invisible="1"/>
+                    <field name="is_approve_1st_approver" invisible="1"/>
                     <field name="approve_2st_approver_ids" invisible="1"/>
+                    <field name="is_approve_2st_approver" invisible="1"/>
                     <field name="approve_3st_approver_ids" invisible="1"/>
+                    <field name="is_approve_3st_approver" invisible="1"/>
                     <field name="approve_4st_approver_ids" invisible="1"/>
+                    <field name="is_approve_4st_approver" invisible="1"/>
                     <field name="approve_5st_approver_ids" invisible="1"/>
+                    <field name="is_approve_5st_approver" invisible="1"/>
                     <button name="button_base_approver"
                             string="Manager Approver"
                             type="object"
@@ -42,7 +47,7 @@
                     <button name="button_1st_approver"
                             string="1st Approver"
                             type="object"
-                            invisible=" &quot;approve_1st_approver_ids not in uid or state != 'base_approved'&quot;"/>
+                            invisible="is_approve_1st_approver == False or state != 'base_approved'"/>
                     <button name="to_approve_approver_back"
                             string="Return To Be Approver"
                             type="object"
@@ -50,35 +55,35 @@
                     <button name="button_2st_approver"
                             string="2nd Approver"
                             type="object"
-                            invisible=" &quot;approve_2st_approver_ids not in uid or state != '1st_approved'&quot;"/>
+                            invisible="is_approve_2st_approver == False or state != '1st_approved'"/>
                     <button name="button_3st_approver"
                             string="3rd Approver"
                             type="object"
-                            invisible=" &quot;approve_3st_approver_ids not in uid or state != '2st_approved'&quot;"/>
+                            invisible="is_approve_3st_approver == False or state != '2st_approved'"/>
                     <button name="button_base_approver_back"
                             string="Return Base "
                             type="object"
-                            invisible=" &quot;approve_1st_approver_ids not in uid or state != '1st_approved'&quot;"/>
+                            invisible="is_approve_1st_approver == False or state != '1st_approved'"/>
                     <button name="button_1st_approver_back"
                             string="Return 1st "
                             type="object"
-                            invisible=" &quot;approve_2st_approver_ids not in uid or state != '2st_approved'&quot;"/>
+                            invisible="is_approve_2st_approver == False or state != '2st_approved'"/>
                     <button name="button_2st_approver_back"
                             string="Return 2nd"
                             type="object"
-                            invisible=" &quot;approve_3st_approver_ids not in uid or state != '3st_approved'&quot;"/>
+                            invisible="is_approve_3st_approver == False or state != '3st_approved'"/>
                     <button name="button_4st_approver"
                             string="4th Approver"
                             type="object"
-                            invisible=" &quot;approve_4st_approver_ids not in uid or state != '3st_approved'&quot;"/>
+                            invisible="is_approve_4st_approver == False or state != '3st_approved'"/>
                     <button name="button_3st_approver_back"
                             string="Return 3rd"
                             type="object"
-                            invisible=" &quot;approve_4st_approver_ids not in uid or state != '4st_approved'&quot;"/>
+                            invisible="is_approve_4st_approver == False or state != '4st_approved'"/>
                     <button name="button_4st_approver_back"
                             string="Return 4th"
                             type="object"
-                            invisible=" &quot;approve_5st_approver_ids not in uid or state != 'approved'&quot;"/>
+                            invisible="is_approve_5st_approver == False or state != 'approved'"/>
                     <button name="cancel_purchase_request"
                             invisible="state in ['draft','done','rejected','cancel']"
                             type="object" string="Cancel"/>
@@ -88,7 +93,7 @@
                             string="Approve"
                             type="object"
                             class="oe_highlight"
-                            invisible=" &quot;approve_5st_approver_ids not in uid or state != '4st_approved'&quot;"/>
+                            invisible=" is_approve_5st_approver == False or state != '4st_approved'"/>
                 </xpath>
                 <xpath expr="//field[@name='product_id']" position="attributes">
                     <attribute name="required">1</attribute>
@@ -186,12 +191,12 @@
                 action="purchase_request_line_cash_form_action"
         />
         <!--        # stock.picking.type-->
-        <record id="view_inherit_picking_type_form" model="ir.ui.view">
-            <field name="name">view.inherit.picking.type.form</field>
+        <record id="view_inherit_picking_type_form_inherit" model="ir.ui.view">
+            <field name="name">view.inherit.picking.type.form.inherit</field>
             <field name="model">stock.picking.type</field>
             <field name="inherit_id" ref="stock.view_picking_type_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group/group[2]" position="after">
+                <xpath expr="//field[@name='sequence_code']" position="after">
                     <field name="is_expense"/>
                 </xpath>
             </field>

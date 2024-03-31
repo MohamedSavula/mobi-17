@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_res_users_form" model="ir.ui.view">
-        <field name="name">res.users.form</field>
-        <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='access_rights']" position="after">
-                <page string="Category Approver">
-                    <field name="cate_approver">
-                        <tree editable="buttom">
-                            <field name="department_id"/>
-                            <field name="_1st_approver"/>
-                            <field name="_2st_approver"/>
-                            <field name="_3st_approver"/>
-                            <field name="_4st_approver"/>
-                            <field name="_5st_approver"/>
-                        </tree>
-                    </field>
-                </page>
-            </xpath>
-        </field>
-    </record>
+<!--    <record id="view_res_users_form" model="ir.ui.view">-->
+<!--        <field name="name">res.users.form</field>-->
+<!--        <field name="model">res.users</field>-->
+<!--        <field name="inherit_id" ref="base.view_users_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//notebook/page[@name='access_rights']" position="after">-->
+<!--                <page string="Category Approver">-->
+<!--                    <field name="cate_approver">-->
+<!--                        <tree editable="buttom">-->
+<!--                            <field name="department_id"/>-->
+<!--                            <field name="_1st_approver"/>-->
+<!--                            <field name="_2st_approver"/>-->
+<!--                            <field name="_3st_approver"/>-->
+<!--                            <field name="_4st_approver"/>-->
+<!--                            <field name="_5st_approver"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </page>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 </odoo>

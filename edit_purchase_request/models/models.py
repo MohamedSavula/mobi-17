@@ -67,10 +67,50 @@ class PurchaseRequestInherit(models.Model):
     assign_to = fields.Many2one('res.users', 'Assign To')
     approve_base_approver = fields.Boolean(compute="_compute_approve_base_approver")
     approve_1st_approver_ids = fields.Many2many(related="department_id.approve_1st_approver_ids")
+    is_approve_1st_approver = fields.Boolean(compute="check_is_approve_1st_approver")
     approve_2st_approver_ids = fields.Many2many(related="department_id.approve_2st_approver_ids")
+    is_approve_2st_approver = fields.Boolean(compute="check_is_approve_2st_approver")
     approve_3st_approver_ids = fields.Many2many(related="department_id.approve_3st_approver_ids")
+    is_approve_3st_approver = fields.Boolean(compute="check_is_approve_3st_approver")
     approve_4st_approver_ids = fields.Many2many(related="department_id.approve_4st_approver_ids")
+    is_approve_4st_approver = fields.Boolean(compute="check_is_approve_4st_approver")
     approve_5st_approver_ids = fields.Many2many(related="department_id.approve_5st_approver_ids")
+    is_approve_5st_approver = fields.Boolean(compute="check_is_approve_5st_approver")
+
+    @api.depends('name')
+    def check_is_approve_1st_approver(self):
+        for rec in self:
+            rec.is_approve_1st_approver = False
+            if self.env.user.id in rec.approve_1st_approver_ids.ids:
+                rec.is_approve_1st_approver = True
+
+    @api.depends('name')
+    def check_is_approve_2st_approver(self):
+        for rec in self:
+            rec.is_approve_2st_approver = False
+            if self.env.user.id in rec.approve_2st_approver_ids.ids:
+                rec.is_approve_2st_approver = True
+
+    @api.depends('name')
+    def check_is_approve_3st_approver(self):
+        for rec in self:
+            rec.is_approve_3st_approver = False
+            if self.env.user.id in rec.approve_3st_approver_ids.ids:
+                rec.is_approve_3st_approver = True
+
+    @api.depends('name')
+    def check_is_approve_4st_approver(self):
+        for rec in self:
+            rec.is_approve_4st_approver = False
+            if self.env.user.id in rec.approve_4st_approver_ids.ids:
+                rec.is_approve_4st_approver = True
+
+    @api.depends('name')
+    def check_is_approve_5st_approver(self):
+        for rec in self:
+            rec.is_approve_5st_approver = False
+            if self.env.user.id in rec.approve_5st_approver_ids.ids:
+                rec.is_approve_5st_approver = True
 
     def cancel_purchase_request(self):
         for rec in self:
@@ -153,7 +193,9 @@ class PurchaseRequestInherit(models.Model):
                 ('is_expense', '=', True)
             ]).ids
             if rec.is_expense:
-                rec.picking_type_id = 13
+                rec.picking_type_id = self.env['stock.warehouse'].search([('name', '=', 'General Project')],
+                                                                         limit=1).id or self.env.ref(
+                    'stock.picking_type_in').id
                 return {'domain': {'picking_type_id': [('id', 'in', picking_type)]}}
             elif not rec.is_expense:
                 return {'domain': {'picking_type_id': []}}
