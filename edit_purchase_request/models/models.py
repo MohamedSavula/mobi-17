@@ -195,7 +195,9 @@ class PurchaseRequestInherit(models.Model):
                 ('is_expense', '=', True)
             ]).ids
             if rec.is_expense:
-                rec.picking_type_id = self.env['stock.warehouse'].search([('name', '=', 'General Project')],
+                warehouse = self.env['stock.warehouse'].search([('name', '=', 'General Project')],
+                                                                         limit=1).id
+                rec.picking_type_id = self.env['stock.picking.type'].search([('warehouse_id', '=', warehouse)],
                                                                          limit=1).id or self.env.ref(
                     'stock.picking_type_in').id
                 rec.stock_picking_type_ids = picking_type
