@@ -170,6 +170,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
             "product_qty": qty,
             "analytic_distribution": item.line_id.analytic_distribution,
             "purchase_request_lines": [(4, item.line_id.id)],
+            "purchase_request_ids": [(4, item.line_id.request_id.id)],
             "date_planned": datetime(
                 date_required.year, date_required.month, date_required.day
             ),
@@ -253,6 +254,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
                 new_pr_line = False
                 po_line = available_po_lines[0]
                 po_line.purchase_request_lines = [(4, line.id)]
+                po_line.purchase_request_ids = [(4, line.request_id.id)]
                 po_line.move_dest_ids |= line.move_dest_ids
                 po_line_product_uom_qty = po_line.product_uom._compute_quantity(
                     po_line.product_uom_qty, alloc_uom

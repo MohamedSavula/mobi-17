@@ -87,7 +87,7 @@ class ProjectProjectInherit(models.Model):
         return res
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+    def _name_search(self, name, args=None, operator='ilike', limit=100, order=None):
         args = args or []
         domain = []
         if name:
@@ -95,7 +95,7 @@ class ProjectProjectInherit(models.Model):
                       ('name', operator, name)]
             if operator in expression.NEGATIVE_TERM_OPERATORS:
                 domain = ['&'] + domain
-        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+        return self._search(domain + args, limit=limit, order=order)
 
 
 class AccountAnalyticAccountInherit(models.Model):

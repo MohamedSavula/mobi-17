@@ -108,6 +108,8 @@ class PurchaseOrderLine(models.Model):
         readonly=True,
         copy=False,
     )
+    purchase_request_ids = fields.Many2many(comodel_name="purchase.request", relation="purchase_request_ids",
+                                            column1="column1", column2="column2", string="purchase_request")
 
     purchase_request_allocation_ids = fields.One2many(
         comodel_name="purchase.request.allocation",
