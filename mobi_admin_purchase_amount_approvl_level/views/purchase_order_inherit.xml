@@ -68,9 +68,9 @@
                 <group string="Petty Cash Holder">
                     <field name="petty_cash_holder"/>
                     <field name="journal_id" invisible="petty_cash_holder == False"/>
-                    <field name="petty_tax_registration" invisible="petty_cash_holder == False"/>
-                    <field name="petty_vat_number" invisible="petty_cash_holder == False"/>
-                    <field name="petty_file_number" invisible="petty_cash_holder == False"/>
+<!--                    <field name="petty_tax_registration" invisible="petty_cash_holder == False"/>-->
+<!--                    <field name="petty_vat_number" invisible="petty_cash_holder == False"/>-->
+<!--                    <field name="petty_file_number" invisible="petty_cash_holder == False"/>-->
                 </group>
             </xpath>
             <xpath expr="//field[@name='property_account_payable_id']" position="after">

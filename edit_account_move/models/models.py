@@ -258,8 +258,7 @@ class AccountMoveLineInherit(models.Model):
             domain = [
                 ('deprecated', '=', False),
                 ('account_type', 'not in', ('asset_receivable', 'liability_payable')),
-                ('company_id', '=', rec.move_id.company_id.id),
-                ('is_off_balance', '=', False)]
+                ('company_id', '=', rec.move_id.company_id.id)]
             if any(account.state in ['draft', 'in_progres'] for account in
                    accounts.filtered(lambda a: a.project_id)) and rec.move_id.move_type in ['in_invoice', 'in_refund']:
                 rec.account_id = False
