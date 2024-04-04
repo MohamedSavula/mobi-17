@@ -86,7 +86,8 @@ class ProjectProjectInherit(models.Model):
                 'partner_id': rec.partner_id.id,
                 'project_id': rec.id,
                 'project_code': rec.project_code,
-                'plan_id': rec.analytic_plan_id.id if rec.analytic_plan_id else 14,
+                'plan_id': rec.analytic_plan_id.id if rec.analytic_plan_id else self.env['account.account'].search(
+                    [('code', '=', '456')], limit=1).id,
                 'analytic_tag_ids': rec.analytic_tag_ids.ids,
                 'expected_cost': rec.expected_cost,
                 'planned_revenue': rec.planned_revenue,
