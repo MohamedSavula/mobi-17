@@ -2,16 +2,16 @@
 <odoo>
     <data>
         <!--        # purchase order-->
-        <record id="id_view_purchase_order_form_inherit_project" model="ir.ui.view">
-            <field name="name">view_purchase_order_form_inherit_project</field>
-            <field name="model">purchase.order</field>
-            <field name="inherit_id" ref="purchase.purchase_order_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='origin']" position="after">
-                    <field name="project_id"/>
-                </xpath>
-            </field>
-        </record>
+<!--        <record id="id_view_purchase_order_form_inherit_project" model="ir.ui.view">-->
+<!--            <field name="name">view_purchase_order_form_inherit_project</field>-->
+<!--            <field name="model">purchase.order</field>-->
+<!--            <field name="inherit_id" ref="purchase.purchase_order_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='origin']" position="after">-->
+<!--                    <field name="project_id"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
         <!--        # account journal-->
         <record id="id_view_account_journal_form_inherit" model="ir.ui.view">
             <field name="name">view_account_journal_form_inherit</field>

@@ -3,7 +3,7 @@
 {
     "name" : "Manual Currency Exchange Rate on Invoice and Payment in Odoo",
     "version" : "17.0.0.0",
-    "depends" : ['base','account'],
+    "depends" : ['base','account', 'sale', 'purchase'],
     "author": "BrowseInfo",
     "summary": "Apps apply manual currency rate on invoice apply manual currency rate on payment apply custom currency rate on invoice custom currency rate on payment custom Currency Exchange Rate on Invoice custom Currency Exchange Rate on payment custom accounting rate",
     "description": """
@@ -33,6 +33,8 @@
     "data" :[
              "views/customer_invoice.xml",
              "views/account_payment_view.xml",
+             "views/inherited_sale_order.xml",
+             "views/inherited_purchase_order.xml",
     ],
     'qweb':[
     ],

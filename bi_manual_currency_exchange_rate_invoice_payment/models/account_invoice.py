@@ -44,7 +44,7 @@ class account_invoice_line(models.Model):
             )
         for line in self:
             if line.move_id.manual_currency_rate_active:
-                line.currency_rate = line.move_id.manual_currency_rate or 1.0
+                line.currency_rate = 1 / line.move_id.manual_currency_rate or 1.0
             else:
                 line.currency_rate = get_rate(
                     from_currency=line.company_currency_id,
