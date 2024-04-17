@@ -24,6 +24,14 @@ class AccountMoveInherit(models.Model):
     total_untaxed_amount = fields.Monetary(compute='get_total_untaxed_amount')
     paid_amount_reconcile = fields.Monetary(compute="_compute_payments_widget_reconciled_info")
 
+    @api.constrains('ref')
+    def check_ref_uniqe(self):
+        for rec in self:
+            ref = self.search([('ref', '!=', False), ('ref', '=', rec.ref), ('id', '!=', rec.id),
+                               ('partner_id', '=', rec.partner_id.id)])
+            if ref and rec.move_type in ('out_invoice', 'in_invoice'):
+                raise UserError(_("Bill Reference already exists"))
+
     @api.depends('amount_total', 'amount_residual')
     def get_paid_amount(self):
         for rec in self:

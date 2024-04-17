@@ -122,7 +122,7 @@
                            column_invisible="parent and (parent.move_type not in ['in_invoice', 'in_refund'] or parent.petty_cash_holder != True)"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']//tree" position="inside">
-                    <field name="note_custom" required="0"
+                    <field name="note_custom" required="parent.move_type == 'in_invoice'"
                            column_invisible="parent and parent.move_type not in ['in_invoice', 'in_refund']"/>
                 </xpath>
                 <xpath expr="//field[@name='account_id']" position="attributes">
