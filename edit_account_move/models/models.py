@@ -255,6 +255,7 @@ class AccountMoveLineInherit(models.Model):
         res = super()._compute_account_id()
         for rec in self:
             if rec.account_id.id == rec.partner_id.property_account_receivable_id.id or rec.account_id.id == rec.partner_id.property_account_payable_id.id:
+                rec.move_id._onchange_partner_id()
                 rec.account_id = rec.move_id.account_id.id
         return res
 
