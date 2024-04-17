@@ -19,7 +19,7 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='analytic_distribution']" position="after">
-                    <field name="analytic_tag_ids" widget="many2many_tags" optional="show"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags" optional="show" width="40%"/>
                 </xpath>
                 <xpath expr="//field[@name='line_ids']//tree/field[@name='analytic_distribution']" position="after">
                     <field name="analytic_tag_ids" widget="many2many_tags"/>
