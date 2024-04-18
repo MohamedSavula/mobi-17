@@ -24,6 +24,23 @@ class AccountMoveInherit(models.Model):
     total_untaxed_amount = fields.Monetary(compute='get_total_untaxed_amount')
     paid_amount_reconcile = fields.Monetary(compute="_compute_payments_widget_reconciled_info")
 
+    @api.onchange('sale_id')
+    def _get_sale_line(self):
+        for rec in self:
+            if rec.sale_id:
+                invoice_vals = self.sale_id.with_company(self.sale_id.company_id)._prepare_invoice()
+                new_currency_id = self.invoice_line_ids and self.currency_id or invoice_vals.get('currency_id')
+                del invoice_vals['company_id']  # avoid recomputing the currency
+                if self.move_type == invoice_vals['move_type']:
+                    del invoice_vals['move_type']  # no need to be updated if it's same value, to avoid recomputes
+                self.update(invoice_vals)
+                self.currency_id = new_currency_id
+                so_lines = self.sale_id.order_line - self.invoice_line_ids.mapped('sale_line_id')
+                for line in so_lines.filtered(lambda l: not l.display_type):
+                    self.invoice_line_ids += self.env['account.move.line'].new(
+                        line._prepare_invoice_line()
+                    )
+
     @api.constrains('ref')
     def check_ref_uniqe(self):
         for rec in self:
@@ -52,18 +69,21 @@ class AccountMoveInherit(models.Model):
     @api.depends('invoice_line_ids', 'invoice_line_ids.price_withholding')
     def get_total_price_withholding(self):
         for rec in self:
-            rec.total_price_withholding = sum(rec.invoice_line_ids.filtered(lambda l:l.account_id.is_withholding).mapped('price_withholding'))
+            rec.total_price_withholding = sum(
+                rec.invoice_line_ids.filtered(lambda l: l.account_id.is_withholding).mapped('price_withholding'))
 
     @api.depends('invoice_line_ids', 'invoice_line_ids.price_unit')
     def get_total_price_vat(self):
         for rec in self:
-            rec.total_price_vat = sum(rec.invoice_line_ids.filtered(lambda l: not l.account_id.is_withholding).mapped('price_withholding'))
+            rec.total_price_vat = sum(
+                rec.invoice_line_ids.filtered(lambda l: not l.account_id.is_withholding).mapped('price_withholding'))
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         for rec in self:
             if rec.partner_id:
-                if rec.move_type in ['in_invoice', 'in_refund'] and rec.partner_id.petty_cash_holder and rec.partner_id.journal_id:
+                if rec.move_type in ['in_invoice',
+                                     'in_refund'] and rec.partner_id.petty_cash_holder and rec.partner_id.journal_id:
                     rec.journal_id = rec.partner_id.journal_id.id
                 if rec.move_type in ['in_invoice', 'in_refund']:
                     rec.account_id = rec.partner_id.property_account_payable_id.id
@@ -133,7 +153,8 @@ class AccountMoveInherit(models.Model):
                 move.paid_amount_reconcile = move.amount_total - move.amount_residual + move.total_price_withholding
                 for paid_amount_reconcile in reconciled_vals:
                     if self._context.get('name_payment') == paid_amount_reconcile.get('ref', False):
-                        move.paid_amount_reconcile = paid_amount_reconcile.get('amount', 0) + move.total_price_withholding
+                        move.paid_amount_reconcile = paid_amount_reconcile.get('amount',
+                                                                               0) + move.total_price_withholding
                 # end new code
             if payments_widget_vals['content']:
                 move.invoice_payments_widget = payments_widget_vals
@@ -145,6 +166,7 @@ class AccountJournalInherit(models.Model):
     _inherit = 'account.journal'
 
     is_journal_reconcile = fields.Boolean()
+
 
 #
 # class AccountReconciliationWidget(models.AbstractModel):
@@ -207,12 +229,21 @@ class AccountJournalInherit(models.Model):
 #             })]
 #         return move_vals
 #
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    def _prepare_invoice_line(self, **optional_values):
+        invoice_line = super()._prepare_invoice_line(**optional_values)
+        invoice_line['sale_line_id'] = self.id
+        return invoice_line
+
 
 class AccountMoveLineInherit(models.Model):
     _inherit = 'account.move.line'
 
     project_id = fields.Many2one(comodel_name="project.project", related="move_id.project_id", store=True)
     sale_id = fields.Many2one(comodel_name="sale.order", related="move_id.sale_id", store=True)
+    sale_line_id = fields.Many2one(comodel_name="sale.order.line")
     tax_registration = fields.Char(string="Tax Registration", related="partner_id.vat")
     vat_number = fields.Char(string="Vat Number", related="partner_id.vat_number")
     file_number = fields.Char(string="File Office", related="partner_id.file_number")
@@ -226,7 +257,7 @@ class AccountMoveLineInherit(models.Model):
                                    column1="account_move_id", column2="account_id")
     partner_name = fields.Char()
     price_withholding = fields.Float(string="Tax amount")
-    is_price_withholding = fields.Boolean(string="",  )
+    is_price_withholding = fields.Boolean(string="", )
     account_id = fields.Many2one(
         comodel_name='account.account',
         string='Account',
@@ -241,15 +272,21 @@ class AccountMoveLineInherit(models.Model):
         tracking=True,
     )
 
-    @api.onchange('price_withholding','account_id')
-    @api.constrains('price_withholding','account_id')
+    @api.onchange('product_id', 'account_id')
+    def get_analytic_account(self):
+        for rec in self:
+            if rec.move_id.project_id.analytic_account_id:
+                rec.analytic_distribution = {rec.move_id.project_id.analytic_account_id.id: 100.00}
+
+    @api.onchange('price_withholding', 'account_id')
+    @api.constrains('price_withholding', 'account_id')
     def get_price_withholding(self):
         for rec in self:
             if rec.price_withholding and not rec.is_price_withholding:
                 if rec.account_id.is_withholding:
-                    rec.price_unit=-rec.price_withholding
+                    rec.price_unit = -rec.price_withholding
                 else:
-                    rec.price_unit=rec.price_withholding
+                    rec.price_unit = rec.price_withholding
 
     def _compute_account_id(self):
         res = super()._compute_account_id()
@@ -273,7 +310,8 @@ class AccountMoveLineInherit(models.Model):
                 rec.account_id = False
                 domain.append(('is_wib', '=', True))
             elif any(account.state == 'invoiced' for account in
-                     accounts.filtered(lambda a: a.project_id)) and rec.move_id.move_type in ['in_invoice', 'in_refund']:
+                     accounts.filtered(lambda a: a.project_id)) and rec.move_id.move_type in ['in_invoice',
+                                                                                              'in_refund']:
                 rec.account_id = False
                 domain.append(('is_actual', '=', True))
             rec.account_ids = self.env['account.account'].sudo().search(domain).ids
