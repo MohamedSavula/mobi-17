@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+inventory_aging_excel_report.access_report_excel,access_report_excel,inventory_aging_excel_report.model_report_excel,base.group_user,1,1,1,1
+inventory_aging_excel_report.access_inventory_aging_wizard,access_inventory_aging_wizard,inventory_aging_excel_report.model_inventory_aging_wizard,base.group_user,1,1,1,1

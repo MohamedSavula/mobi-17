@@ -127,7 +127,6 @@ class CentioneDeliveryRequest(models.Model):
     def delivery_transfers_action(self):
         return {
             'name': _('Transfers'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'stock.picking',
             'type': 'ir.actions.act_window',
@@ -168,7 +167,6 @@ class CentioneDeliveryRequest(models.Model):
             context.update({'default_delivery_request_id': rec.id})
             return {
                 'name': 'Purchase Orders',
-                'view_type': 'form',
                 'view_mode': 'tree,form',
                 'res_model': 'purchase.order',
                 'context': context,
@@ -190,7 +188,6 @@ class CentioneDeliveryRequest(models.Model):
     def delivery_purchases_action(self):
         return {
             'name': _('Purchase Requests'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'centione.purchase.request',
             'type': 'ir.actions.act_window',
