@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="hr_employee_inh_handicap" model="ir.ui.view">
+            <field name="name">handicap.bool.field</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <group>
+<!--                        <label for="is_a_handicap"/>-->
+                        <field name="is_a_handicap"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="income_tax_inh_handicap_field" model="ir.ui.view">
+            <field name="name">handicap.float.field</field>
+            <field name="model">income.tax.settings</field>
+            <field name="inherit_id" ref="centione_income_tax.view_income_tax_settings_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='functional_exempt_value']" position="after">
+                    <field name="functional_exempt_handicap_value"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

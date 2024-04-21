@@ -1,0 +1,105 @@
+<odoo>
+    <data>
+        <record id="view_hr_medical_form" model="ir.ui.view">
+            <field name="name">view_hr_medical_form</field>
+            <field name="model">hr.medical.insurance</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="subscribers_report" class="oe_highlight" string="Subscribers report"
+                                type="object"/>
+                        <field name="report" widget="binary" string="Download" filename="report_name"/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="date_from" string="Period"/>
+                                <div>
+                                    <field name="date_from" class="oe_inline" required="1"/>
+                                    -
+                                    <field name="date_to" class="oe_inline" required="1"/>
+                                </div>
+                                <field name="insurance_company_id" required="1"/>
+                            </group>
+                            <group>
+                                <field name="critical_case_allowance"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="subscribers" string="Subscribers">
+                                <group>
+                                    <group>
+                                        <field name="max_number_subscribers"/>
+                                    </group>
+                                    <group>
+                                        <field name="number_of_subscribers"/>
+                                    </group>
+                                </group>
+                                <field name="subscribers_ids" readonly="1">
+                                    <tree editable="bottom">
+                                        <field name="employee_id"/>
+                                        <field name="medical_grade_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="grades" string="Grades">
+                                <group>
+                                    <field name="max_allowed_grades"/>
+                                </group>
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="grade_id"/>
+                                        <field name="company_share"/>
+                                        <field name="company_share_percentage" string="%"/>
+                                        <field name="tax"/>
+                                        <field name="tax_percentage" string="%"/>
+                                        <field name="fees"/>
+                                        <field name="fees_percentage" string="%"/>
+                                        <field name="employee_share"/>
+                                        <field name="employee_share_percentage" string="%"/>
+                                        <field name="total_employee_share"/>
+                                        <field name="subscription"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="family_grade" string="Family Grades">
+                                <field name="family_grade_ids">
+                                    <tree editable="bottom">
+                                        <field name="grade_id"/>
+                                        <field name="spouse"/>
+                                        <field name="child"/>
+                                        <field name="on_company" invisible="1"/>
+                                        <field name="company_percentage"/>
+                                        <field name="employee_percentage"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_medical_insurance" model="ir.actions.act_window">
+            <field name="name">Medical Insurance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.medical.insurance</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_hr_medical_insurance"
+                  name="Medical Insurance"
+                  parent="hr.menu_hr_root"
+                  action="view_hr_medical_insurance"
+                  sequence="16"
+                  groups="hr.group_hr_manager"
+        />
+    </data>
+</odoo>

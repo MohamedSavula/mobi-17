@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="income_tax_config_salary_rule" model="hr.salary.rule">
+                <field name="name">INCOME TAX SALARY RULE</field>
+                <field name="sequence" eval="80"/>
+                <field name="code">INCTAX</field>
+                <field name="category_id" ref="hr_payroll.DED"/>
+                <field name="condition_select">none</field>
+                <field name="amount_select">code</field>
+                <field name="amount_python_compute">effective_salary = contract.wage + categories.ALW + categories.DED
+                    result = -1 * payslip.env['income.tax.settings'].calc_income_tax(effective_salary,employee)
+                </field>
+                <field name="struct_id" ref="hr_payroll.structure_002"/>
+           </record>
+
+          <record id="income_tax_compliment_salary_rule" model="hr.salary.rule">
+                <field name="name">INCOME TAX Next Month SALARY RULE</field>
+                <field name="sequence" eval="83"/>
+                <field name="code">NXTTAX</field>
+                <field name="category_id" ref="hr_payroll.DED"/>
+                <field name="condition_select">none</field>
+                <field name="amount_select">code</field>
+                <field name="amount_python_compute">
+                    effective_salary = categories.BASIC + categories.ALW + categories.DED
+                    result = -1 * payslip.env['income.tax.settings'].calc_next_tax(effective_salary,employee,payslip)
+                </field>
+                <field name="struct_id" ref="hr_payroll.structure_002"/>
+           </record>
+
+    </data>
+</odoo>

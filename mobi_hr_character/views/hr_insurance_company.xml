@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="view_hr_insurance_company" model="ir.actions.act_window">
+            <field name="name">Insurance Company</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.insurance.company</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_hr_document_type"
+                  name="Insurance Companies"
+                  parent="hr.menu_human_resources_configuration"
+                  action="view_hr_insurance_company"
+                  sequence="16"/>
+    </data>
+</odoo>

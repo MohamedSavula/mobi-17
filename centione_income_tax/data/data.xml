@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="income_tax_settings0" model="income.tax.settings">
+            <field name="is_functional_exempt">True</field>
+            <field name="name">Tax Divisions</field>
+            <field name="functional_exempt_value">0</field>
+        </record>
+
+    </data>
+</odoo>

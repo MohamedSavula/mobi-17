@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="hr_cluster_view_form" model="ir.ui.view">
+            <field name="name">hr_cluster_view_form</field>
+            <field name="model">hr.cluster</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="character_ids" string="Characters">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_cluster_action" model="ir.actions.act_window">
+            <field name="name">Hr Cluster</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.cluster</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="hr_cluster_menu" parent="hr.menu_human_resources_configuration" action="hr_cluster_action"
+                  sequence="1"/>
+    </data>
+</odoo>

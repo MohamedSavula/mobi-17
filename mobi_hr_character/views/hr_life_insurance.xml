@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <record id="view_hr_life_insurance_form" model="ir.ui.view">
+            <field name="name">view_hr_life_insurance_form</field>
+            <field name="model">hr.life.insurance</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="subscribers_report" class="oe_highlight" string="Subscribers report" type="object"/>
+                        <field name="report" widget="binary" string="Download" filename="report_name"/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder="Name" required="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="date_from" string="Period"/>
+                                <div>
+                                    <field name="date_from" class="oe_inline" required="1"/> - <field name="date_to" class="oe_inline" required="1"/>
+                                </div>
+                                <field name="insurance_company_id" required="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="subscribers" string="Subscribers">
+                                <field name="subscribers_ids" readonly="1">
+                                    <tree editable="bottom">
+                                        <field name="employee_id"/>
+                                        <field name="life_grade_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="grades" string="Grades">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="grade_id"/>
+                                        <field name="company_share"/>
+                                        <field name="company_share_percentage" string="%"/>
+                                        <field name="tax"/>
+                                        <field name="tax_percentage" string="%"/>
+                                        <field name="fees"/>
+                                        <field name="fees_percentage" string="%"/>
+                                        <field name="employee_share"/>
+                                        <field name="employee_share_percentage" string="%"/>
+                                        <field name="total_employee_share"/>
+                                        <field name="subscription"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_life_insurance" model="ir.actions.act_window">
+            <field name="name">Life Insurance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.life.insurance</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_hr_life_insurance"
+                  name="Life Insurance"
+                  parent="hr.menu_hr_root"
+                  action="view_hr_life_insurance"
+                  sequence="16"
+                  groups="hr.group_hr_manager"
+        />
+    </data>
+</odoo>

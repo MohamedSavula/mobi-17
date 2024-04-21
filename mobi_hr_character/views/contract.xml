@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_hr_contract_view_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">hr_contract_view_form_inherit_add_fields</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='hr_responsible_id']" position="after">
+                    <field name="leaves_id"/>
+                    <field name="auto_leaves_allocated"/>
+                </xpath>
+                <xpath expr="//group[@name='contract_details']" position="inside">
+                    <field name="end_of_trail_period"/>
+                    <field name="number_working_days_month"/>
+                    <field name="number_working_hours_day"/>
+                </xpath>
+                <xpath expr="//group[@name='contract_details']" position="after">
+                    <group>
+                        <field name="number_of_salary_multipliers"/>
+                        <field name="total_loan_short_term_budget"/>
+                        <field name="number_of_salary_long_term"/>
+                        <field name="total_loan_long_term_budget"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

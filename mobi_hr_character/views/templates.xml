@@ -1,0 +1,237 @@
+<odoo>
+    <data>
+        <record id="payroll_hr_employee_view_form_inherit" model="ir.ui.view">
+            <field name="name">payroll_hr_employee_view_form_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='registration_number']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_hr_job_form_inherit" model="ir.ui.view">
+            <field name="name">view_hr_job_form_inherit</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='recruitment']" position="inside">
+                    <field name="jop"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr_employee_form_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='birthday']" position="before">
+                    <separator name="birth" string="Birth"/>
+                </xpath>
+                <xpath expr="//field[@name='birthday']" position="after">
+                    <field name="retirement_date"/>
+                </xpath>
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page name="prepositions" string="Prepositions">
+                        <field name="preposition_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="job"/>
+                                <field name="department_id"/>
+                                <field name="payment_method"/>
+                                <field name="bank_name"/>
+                                <field name="account_number"/>
+                                <field name="grade_id"/>
+                                <field name="project"/>
+                                <field name="sub_project"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="medical_history" string="Medical History" groups="hr.group_hr_manager">
+                        <field name="medical_history_ids">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="date"/>
+                                <field name="medical_id" options="{'no_create' : True}"/>
+                                <field name="medical_grade_id" options="{'no_create' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create' : True}"/>
+                                <field name="cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Penalties">
+                        <field name="penalty_ids">
+                            <tree editable="bottom">
+                                <field name="penalty_type"/>
+                                <field name="penalty_date"/>
+                                <field name="penalty_desc"/>
+                                <field name="penalty_action"/>
+                                <field name="penalty_deduct_type"/>
+                                <field name="penalty_deduct_days"/>
+                                <field name="penalty_site"/>
+                                <field name="penalty_note"/>
+                                <field name="responsible_employee_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Excuses">
+                        <group string="Excuses">
+                            <field name="number_excuse_month"/>
+                            <field name="period_excuse_month" widget="float_time"/>
+                            <field name="period_one_excuse" widget="float_time"/>
+                        </group>
+                    </page>
+                    <page string="Medical Insurance">
+                        <field name="medical_line_ids">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="medical_id" options="{'no_create' : True}"/>
+                                <field name="medical_grade_id" options="{'no_create' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create' : True}"/>
+                                <field name="cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Life Insurance">
+                        <field name="life_line_ids">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="life_id" options="{'no_create' : True}"/>
+                                <field name="life_grade_id" options="{'no_create' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create' : True}"/>
+                                <field name="cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Life History" groups="hr.group_hr_manager">
+                        <field name="life_history_ids">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="date" invisible="0"/>
+                                <field name="life_id" options="{'no_create' : True}"/>
+                                <field name="life_grade_id" options="{'no_create' : True}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="follower_ids" widget="many2many_tags" options="{'no_create' : True}"/>
+                                <field name="cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="employee_followers" string="Employee Followers">
+                        <field name="follower_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="birth_date"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//h2" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
+                    <h1 class="d-flex flex-row">
+                        <field name="employee_attendance_id" placeholder="Attendance ID" readonly="1"
+                               style="font-size: min(4vw, 2.6rem);"/>
+                    </h1>
+                    <h1 class="d-flex flex-row">
+                        <field name="employee_arabic" placeholder="Arabic name" style="font-size: min(4vw, 2.6rem);"/>
+                    </h1>
+                    <span>Job Position</span>
+                    <br/>
+                    <xpath expr="//field[@name='job_id']" position="move"/>
+                    <br/>
+                </xpath>
+                <xpath expr="//group/group" position="inside">
+                    <field name="is_a_handicap"/>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']/group/group" position="inside">
+                    <field name="old_id"/>
+                </xpath>
+                <xpath expr="//field[@name='lang']" position="after">
+                    <separator name="finance_work" string="Finance work"/>
+                    <field name="payment_method_id"/>
+                    <field name="bank_id"/>
+                    <field name="bank_account_number_id"/>
+                </xpath>
+                <xpath expr="//div[@id='o_work_employee_container']" position="after">
+                    <group>
+                        <group>
+                            <field name="arabic_department"/>
+                            <field name="arabic_job_position"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']/group/group[1]" position="inside">
+                    <field name="func_id"/>
+                    <field name="cluster_id"/>
+                    <field name="character_id" options="{'no_create_edit':True,'no_create':True}"
+                           invisible="cluster_id == False"
+                           domain="[('cluster_id','=',cluster_id)]"/>
+                    <field name="title_id" options="{'no_create_edit':True,'no_create':True}"
+                           invisible="character_id == False"
+                           domain="[('character_id','=',character_id)]"/>
+                    <field name="character_level_id" string="level" options="{'no_create_edit':True,'no_create':True}"
+                           invisible="title_id == False"
+                           domain="[('title_id','=',title_id)]"/>
+                </xpath>
+                <xpath expr="//field[@name='spouse_birthdate']" position="after">
+                    <field name="spouse"/>
+                    <field name="spouse_complete_name"/>
+<!--                    <field name="spouse_birthdate_employee"/>-->
+                </xpath>
+                <xpath expr="//page[@name='personal_information']/group" position="inside">
+                    <group>
+                        <separator name="insurance" string="Insurance"/>
+                        <field name="social_insurance_no"/>
+                        <field name="social_insurance_office"/>
+                        <field name="insurance_start_date"/>
+                        <field name="insurance_end_date"/>
+                        <field name="basic_insurance_salary"/>
+                        <field name="for_vacation_balance"/>
+                        <field name="no_create_allocation_leaves"/>
+                        <separator name="others" string="Others"/>
+                        <field name="person_type"/>
+                        <field name="opex_cogs"/>
+                        <field name="region"/>
+                        <field name="people_group_id"/>
+                    </group>
+                    <group>
+                        <field name="grade_id"/>
+                        <field name="hire_date"/>
+                        <field name="assignment_number"/>
+                        <field name="project_id"/>
+                        <field name="sub_project"/>
+                        <field name="cost_center_id"/>
+                        <field name="account_analytic_Tag_id"/>
+                        <field name="first_hire_date"/>
+                        <field name="division_id"/>
+                        <field name="employee_documents"/>
+                        <field name="additional_note"/>
+                        <field name="home_phone"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@name='application_group']" position="after">
+                    <group>
+                        <field name="automatic_absence"/>
+                        <field name="transfer_all_allocation"/>
+                        <field name="total_loan_unpaid"/>
+                        <field name="remaining_legal_leaves"/>
+                        <field name="medical_exam"/>
+                        <field name="company_vehicle"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

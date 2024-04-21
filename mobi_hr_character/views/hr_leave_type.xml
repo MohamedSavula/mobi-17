@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_edit_holiday_status_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">edit_holiday_status_form_inherit_add_fields</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='allocation_validation']" position="inside">
+                    <field name="is_legal_leaves"/>
+                    <field name="is_unpaid"/>
+                    <field name="consume_weekends"/>
+                    <field name="is_carried_over"/>
+                    <field name="public_holiday"/>
+                    <field name="end_service_incentive"/>
+                    <field name="apply_double_validation"/>
+                    <field name="transfer_from"/>
+                    <field name="transfer_to"/>
+                    <field name="open_carried_over"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

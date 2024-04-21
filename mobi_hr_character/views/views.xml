@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <record id="id_view_department_form_inherit" model="ir.ui.view">
+            <field name="name">view_department_form_inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                    <field name="analytic_account_id"/>
+                    <field name="opex_cogs" required="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_character_view_form" model="ir.ui.view">
+            <field name="name">hr_character_view_form</field>
+            <field name="model">hr.character</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="title_ids" string="References">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_character_action" model="ir.actions.act_window">
+            <field name="name">Grade Characters</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.character</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="hr_character_menu" parent="hr.menu_human_resources_configuration" action="hr_character_action"
+                  sequence="3"/>
+        <!--        # hr employee-->
+        <record id="id_hr_employee_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">hr_employee_form_inherit_add_fields</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='o_work_employee_main']" position="inside">
+                    <group>
+                        <field name="jop"/>
+                        <field name="job_title"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']" position="inside">
+                    <group>
+                        <group>
+                            <field name="travel_to"/>
+                            <field name="embassy_name"/>
+                        </group>
+                        <group>
+                            <separator name="about_military" string="About Military"/>
+                            <field name="military_status_id"/>
+                            <field name="military_start_date"/>
+                            <field name="military_end_date"/>
+                            <field name="military_card_number"/>
+                            <field name="military_description"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_insurance_tap_tree" model="ir.ui.view">
+            <field name="name">insurance.tap.tree</field>
+            <field name="model">insurance.tap</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="social_insurance_no"/>
+                    <field name="social_insurance_office"/>
+                    <field name="insurance_start_date"/>
+                    <field name="insurance_end_date"/>
+                    <field name="basic_insurance_salary"/>
+                    <field name="total_number_of_insurance_years"/>
+                </tree>
+            </field>
+        </record>
+        <record id="id_insurance_tap_form" model="ir.ui.view">
+            <field name="name">insurance.tap.form</field>
+            <field name="model">insurance.tap</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="social_insurance_no"/>
+                                <field name="social_insurance_office"/>
+                                <field name="insurance_start_date"/>
+                                <field name="insurance_end_date"/>
+                            </group>
+                            <group>
+                                <field name="basic_insurance_salary"/>
+                                <field name="total_number_of_insurance_years"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="id_insurance_tap_search" model="ir.ui.view">
+            <field name="name">insurance.tap.search</field>
+            <field name="model">insurance.tap</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="social_insurance_no"/>
+                    <field name="social_insurance_office"/>
+                </search>
+            </field>
+        </record>
+        <record id="id_insurance_tap_action" model="ir.actions.act_window">
+            <field name="name">Insurance Tap</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">insurance.tap</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="id_insurance_tap_menu" parent="hr.menu_human_resources_configuration"
+                  action="id_insurance_tap_action" sequence="10"/>
+    </data>
+</odoo>

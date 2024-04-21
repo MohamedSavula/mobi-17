@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_hr_excuse_request" model="ir.sequence">
+            <field name="name">Hr Excuse</field>
+            <field name="code">hr.excuse</field>
+            <field name="prefix">Excuse/</field>
+            <field name="padding">3</field>
+        </record>
+        <record id="group_excuse_direct_manager" model="res.groups">
+            <field name="name">Direct Manager</field>
+        </record>
+        <record id="id_seq_employee_attendance" model="ir.sequence">
+            <field name="name">Employee Attendance</field>
+            <field name="code">hr.employee</field>
+            <field name="prefix">q</field>
+            <field name="padding">6</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

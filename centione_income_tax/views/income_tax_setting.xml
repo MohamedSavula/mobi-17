@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_income_tax_settings_form" model="ir.ui.view">
+            <field name="name">income.tax.settings.form</field>
+            <field name="model">income.tax.settings</field>
+            <field name="arch" type="xml">
+                <form string="MODEL" create="false" delete="false">
+                    <sheet>
+                        <group>
+                            <field name="is_functional_exempt"/>
+                            <field name="functional_exempt_value" invisible="is_functional_exempt != True"/>
+                        </group>
+                        <field name="line_ids">
+                            <tree editable="bottom" string="Taxes Divisions">
+                                <field name="sequence" />
+                                <field name="min_value" required="True"/>
+                                <field name="max_value" required="True"/>
+                                <field name="diff_value" />
+                                <field name="tax_ratio" required="True"/>
+                                <field name="discount_ratio" required="True"/>
+                                <field name="beginning_segment_sequence"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_income_tax_settings_tree" model="ir.ui.view">
+            <field name="name">income.tax.settings.tree</field>
+            <field name="model">income.tax.settings</field>
+            <field name="arch" type="xml">
+                <tree string="MODEL" create="false" delete="false">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_income_tax_settings_action" model="ir.actions.act_window">
+            <field name="name">Income Tax</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">income.tax.settings</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="target">current</field>
+            <field name="domain">[]</field>
+        </record>
+        
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_income_tax_settings" name="Income Tax" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" action="view_income_tax_settings_action" sequence="10"/>
+    
+    </data>
+</odoo>

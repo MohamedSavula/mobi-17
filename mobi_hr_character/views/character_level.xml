@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="hr_character_level_view_form" model="ir.ui.view">
+            <field name="name">hr_character_level_view_form</field>
+            <field name="model">hr.character.level</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_character_level_action" model="ir.actions.act_window">
+            <field name="name">Levels</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.character.level</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="hr_character_level_menu" parent="hr.menu_human_resources_configuration"
+                  action="hr_character_level_action" sequence="2"/>
+    </data>
+</odoo>

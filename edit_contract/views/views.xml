@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_view_hr_contract_form_inherit_add_fields" model="ir.ui.view">
+            <field name="name">view_hr_contract_form_inherit_add_fields</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='salary_info']" position="after">
+                    <group>
+                        <group>
+                            <field name="is_insured"/>
+                            <field name="fixed_insurance"/>
+                            <field name="variable_insurance"/>
+                            <field name="average_variables_of_previous_year"/>
+                            <field name="is_employer"/>
+                            <field name="bank_wage"/>
+                            <field name="cash_wage"/>
+                        </group>
+                        <group>
+                            <field name="basic_salary"/>
+                            <field name="fixed_other_allowance"/>
+                            <field name="fixed_transportation_allowance"/>
+                            <field name="natural_allowance"/>
+                            <field name="previous_special_bonus"/>
+                            <field name="special_bonus"/>
+                            <field name="medical_upgrade"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='information']" position="after">
+                    <page string="Allowance" name="allowance">
+                        <group>
+                            <group>
+                                <field name="eg_mobile_allowance"/>
+                                <field name="labour_allowance"/>
+                                <field name="meal_allowance"/>
+                                <field name="sales_transportation_allowance"/>
+                                <field name="transportation_allowance"/>
+                                <field name="one_percentage_allowance"/>
+                            </group>
+                            <group>
+                                <field name="transportation_benefits_allowance"/>
+                                <field name="pay_insurance_deduction"/>
+                                <field name="medical_deduction"/>
+                                <field name="accident_deduction"/>
+                                <field name="car_allowance"/>
+                                <field name="living_subsidy_allowance"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

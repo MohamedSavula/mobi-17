@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hr_manager_access_income_tax_settings,HR Manager Access Income Tax Settings,model_income_tax_settings,,1,1,1,1
+hr_manager_access_income_tax_settings_line,HR Manager Access Income Tax Settings line,model_income_tax_settings_line,,1,1,1,1

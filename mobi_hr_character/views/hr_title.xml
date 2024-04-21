@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="hr_title_view_form" model="ir.ui.view">
+            <field name="name">hr_title_view_form</field>
+            <field name="model">hr.title</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="character_level_ids" string="Levels">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_title_action" model="ir.actions.act_window">
+            <field name="name">Hr Reference</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.title</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="hr_title_menu" parent="hr.menu_human_resources_configuration" action="hr_title_action"
+                  sequence="2"/>
+    </data>
+</odoo>

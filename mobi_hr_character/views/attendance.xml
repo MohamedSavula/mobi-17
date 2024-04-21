@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_attendance_absence_form" model="ir.ui.view">
+            <field name="name">attendance absence form</field>
+            <field name="model">attendance.absence</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="employee_id" required="1"/>
+                            <field name="date" required="1"/>
+                            <field name="payslip_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_attendance_absence_tree" model="ir.ui.view">
+            <field name="name">attendance absence tree</field>
+            <field name="model">attendance.absence</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="payslip_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_attendance_absence" model="ir.actions.act_window">
+            <field name="name">Absence</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">attendance.absence</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_attendance_absence" name="Absence" parent="hr_attendance.menu_hr_attendance_root" sequence="11"/>
+        <menuitem id="id_menu_attendance_absence"
+                  parent="menu_attendance_absence"
+                  action="action_attendance_absence"
+                  sequence="11"/>
+<!--        # attendance.manual.absence-->
+        <record id="view_attendance_manual_absence_form" model="ir.ui.view">
+            <field name="name">hr attendance.manual.absence.form</field>
+            <field name="model">attendance.manual.absence</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="employee_id" required="1"/>
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                            <field name="payslip_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_attendance_manual_absence_tree" model="ir.ui.view">
+            <field name="name">attendance.manual.absence.tree</field>
+            <field name="model">attendance.manual.absence</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="payslip_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="id_attendance_manual_absence_action" model="ir.actions.act_window">
+            <field name="name">Manual Absence</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">attendance.manual.absence</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="id_attendance_manual_absence_menu"
+                  parent="menu_attendance_absence"
+                  action="id_attendance_manual_absence_action"
+                  sequence="12"/>
+    </data>
+</odoo>
