@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        # account move-->
+        <record id="id_view_move_form_inherit_add_tax" model="ir.ui.view">
+            <field name="name">view_move_form_inherit_add_tax</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_send_total_price" invisible="1"/>
+                </xpath>
+<!--                <xpath expr="//field[@name='invoice_line_ids']" position="after">-->
+<!--                    <field name="account_move_tax_ids" attrs="{'invisible': [('move_type','!=', 'in_invoice')]}">-->
+<!--                        <tree editable="bottom">-->
+<!--                            <field name="move_id" invisible="1"/>-->
+<!--                            <field name="company_id" invisible="1"/>-->
+<!--                            <field name="currency_id" invisible="1"/>-->
+<!--                            <field name="partner_id" invisible="1"/>-->
+<!--                            <field name="petty_cash_holder" invisible="1"/>-->
+<!--                            <field name="date"/>-->
+<!--                            <field name="vendor" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="arabic_name" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="tax_registration" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="vat_number" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="file_number" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="untaxed_amount" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="gross_invoice" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="net_invoice" attrs="{'readonly': [('petty_cash_holder','=', False)]}" force_save="1"/>-->
+<!--                            <field name="wh_tax_type"/>-->
+<!--                            <field name="tax_description"/>-->
+<!--                            <field name="tax_account_id"/>-->
+<!--                            <field name="amount"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </xpath>-->
+            </field>
+        </record>
+    </data>
+</odoo>

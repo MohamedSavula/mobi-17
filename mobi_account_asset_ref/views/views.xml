@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="id_asset_modify_form_inherit_sell_amount">
+            <field name="name">asset_modify_form_inherit_sell_amount</field>
+            <field name="model">asset.modify</field>
+            <field name="inherit_id" ref="account_asset.asset_modify_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="account_id"
+                           invisible="modify_action != 'sell'"/>
+                    <field name="sell_amount" widget="monetary"
+                           invisible="modify_action != 'sell'"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_ids']" position="attributes">
+<!--                    <attribute name="attrs">{}</attribute>-->
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']" position="attributes">
+<!--                    <attribute name="attrs">{}</attribute>-->
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="id_view_account_asset_revenue_form_inherit_code">
+            <field name="name">view_account_asset_revenue_form_inherit_code</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_title')]" position="after">
+                    <group>
+                        <group>
+                            <field name="code" string="Reference"/>
+                        </group>
+                        <group>
+                            <field name="asset_remaining_value"/>
+                            <field name="asset_depreciated_value"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="id_view_account_asset_purchase_tree_inherit_code">
+            <field name="name">view_account_asset_purchase_tree_inherit_code</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='method']" position="before">
+                    <field name="asset_depreciated_value"/>
+                    <field name="asset_remaining_value"/>
+                    <field name="depreciation_entries_count"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="code"/>
+                    <field name="model_id"/>
+                    <field name="prorata_date"/>
+                    <field name="method_number"/>
+                    <field name="method_period"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

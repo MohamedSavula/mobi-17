@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_wip_cost,wip_vs_cost.account_wip_cost,model_account_wip_cost,base.group_user,1,1,1,1
+access_generate_be_invoice_wizard,wip_vs_cost.generate_be_invoice_wizard,model_generate_be_invoice_wizard,base.group_user,1,1,1,1

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wip_cost_tree">
+            <field name="name">Wip VS. Cost Tree</field>
+            <field name="model">account.wip.cost</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id_wip"/>
+                    <field name="account_id_cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="wip_cost_form">
+            <field name="name">Wip VS. Cost Form</field>
+            <field name="model">account.wip.cost</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="account_id_wip"/>
+                                <field name="account_id_cost"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="wip_cost_act">
+            <field name="name">Wip VS. Cost</field>
+            <field name="res_model">account.wip.cost</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Wip VS. Cost" id="wip_cost_menu" parent="account.account_account_menu"
+              action="wip_cost_act" sequence="4"/>
+    </data>
+</odoo>

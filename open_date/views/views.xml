@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_res_config_settings_view_form_inherit_add_open_date" model="ir.ui.view">
+            <field name="name">res_config_settings_view_form_inherit_add_open_date</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='invoicing_settings']" position="inside">
+                    <setting id="default_setting_options" string="Default Sending Options">
+                        <h2>Accounting Open Date</h2>
+                        <div class="row mt16 o_settings_container" id="quick_edit_mode">
+                            <div class="col-6 col-lg-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="journal_entries_start_date" class="col-lg-4 o_light_label"
+                                            />
+                                            <field name="journal_entries_start_date"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="journal_entries_end_date"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="journal_entries_end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt8">
+                                            <label for="all_users_start_date" class="col-lg-4 o_light_label"
+                                            />
+                                            <field name="all_users_start_date"/>
+                                        </div>
+                                        <div class="row mt8">
+                                            <label for="all_users_end_date"
+                                                   class="col-lg-4 o_light_label"/>
+                                            <field name="all_users_end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_open_date_form" model="ir.ui.view">
+            <field name="name">open_date_form</field>
+            <field name="model">open.date</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="journal_entries_start_date"/>
+                                <field name="journal_entries_end_date"/>
+                            </group>
+                            <group>
+                                <field name="all_users_start_date"/>
+                                <field name="all_users_end_date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="id_open_date_action" model="ir.actions.act_window">
+            <field name="name">Lock Date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">open.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="id_open_date_menu" parent="account.menu_finance_entries_actions" action="id_open_date_action"
+                  sequence="56"/>
+        <menuitem id="account_accountant.menu_action_change_lock_date" active="False"/>
+    </data>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_account_invoice_tax_report" model="ir.actions.report">
+            <field name="name">Account Apple Invoice Lines</field>
+            <field name="model">account.invoice.tax.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">model_tax.template_id_account_invoice_tax_report</field>
+            <field name="report_file">model_tax.template_id_account_invoice_tax_report</field>
+            <field name="binding_model_id" ref="model_tax.model_account_invoice_tax_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="view_account_invoice_tax_wizard_form" model="ir.ui.view">
+            <field name="name">account.invoice.wizard.form</field>
+            <field name="model">account.invoice.tax.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Account Apple Invoice Lines">
+                    <sheet>
+                        <h3>
+                            Generate Invoice tax lines Report
+                        </h3>
+                        <group>
+                            <group>
+                                <field name="year"/>
+                                <field name="duration"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_account_invoice_tax_search"
+                                string="Generate selection Lines Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_tax_wizard_action" model="ir.actions.act_window">
+            <field name="name">Account Invoice Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.invoice.tax.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_invoice_tax_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <!-- This Menu Item Must have a parent -->
+        <menuitem id="menu_account_invoice_tax_report" name="Form 41"
+                  parent="account.menu_finance_reports" action="view_account_invoice_tax_wizard_action"
+                  sequence="-1"/>
+
+
+    </data>
+</odoo>
