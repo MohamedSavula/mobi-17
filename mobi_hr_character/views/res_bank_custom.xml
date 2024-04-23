@@ -1,8 +1,8 @@
 <odoo>
     <data>
-        <record id="func_title_view_form" model="ir.ui.view">
-            <field name="name">func_title_view_form</field>
-            <field name="model">func.title</field>
+        <record id="res_bank_custom_form" model="ir.ui.view">
+            <field name="name">res_bank_custom_form</field>
+            <field name="model">res.bank.custom</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
@@ -14,15 +14,14 @@
             </field>
         </record>
 
-        <record id="func_title_action" model="ir.actions.act_window">
-            <field name="name">Functional Title</field>
+        <record id="res_bank_custom_action" model="ir.actions.act_window">
+            <field name="name">Bank</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">func.title</field>
+            <field name="res_model">res.bank.custom</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="func_title_menu" parent="hr.menu_human_resources_configuration" action="func_title_action"
+        <menuitem id="res_bank_custom_action_menu" parent="hr.menu_human_resources_configuration" action="res_bank_custom_action"
                   sequence="2"/>
-
     </data>
 </odoo>

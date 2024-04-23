@@ -12,7 +12,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'hr', 'mobi_script_leaves', 'project', 'sh_analytic_journal'],
+    'depends': ['base', 'hr', 'mobi_script_leaves', 'project', 'sh_analytic_journal', 'hr_payroll_account'],
 
     # always loaded
     'data': [
@@ -40,6 +40,8 @@
         'views/hr_insurance_company.xml',
         'views/hr_employee.xml',
         'views/payment_method_employee.xml',
+        'views/res_bank_custom.xml',
+        'views/res_partner_bank_custom.xml',
     ],
     "license": "LGPL-3",
 }

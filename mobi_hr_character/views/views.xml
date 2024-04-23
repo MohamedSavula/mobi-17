@@ -5,7 +5,7 @@
             <field name="model">hr.department</field>
             <field name="inherit_id" ref="hr.view_department_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//group" position="inside">
+                <xpath expr="//field[@name='parent_id']" position="after">
                     <field name="analytic_account_id"/>
                     <field name="opex_cogs" required="1"/>
                 </xpath>
@@ -49,22 +49,6 @@
                     <group>
                         <field name="jop"/>
                         <field name="job_title"/>
-                    </group>
-                </xpath>
-                <xpath expr="//page[@name='personal_information']" position="inside">
-                    <group>
-                        <group>
-                            <field name="travel_to"/>
-                            <field name="embassy_name"/>
-                        </group>
-                        <group>
-                            <separator name="about_military" string="About Military"/>
-                            <field name="military_status_id"/>
-                            <field name="military_start_date"/>
-                            <field name="military_end_date"/>
-                            <field name="military_card_number"/>
-                            <field name="military_description"/>
-                        </group>
                     </group>
                 </xpath>
             </field>

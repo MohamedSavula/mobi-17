@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="res_partner_bank_custom_form" model="ir.ui.view">
+            <field name="name">res_partner_bank_custom_form</field>
+            <field name="model">res.partner.bank.custom</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_partner_bank_custom_action" model="ir.actions.act_window">
+            <field name="name">Bank Account Number</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.bank.custom</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="res_partner_bank_custom_action_menu" parent="hr.menu_human_resources_configuration"
+                  action="res_partner_bank_custom_action"
+                  sequence="2"/>
+    </data>
+</odoo>

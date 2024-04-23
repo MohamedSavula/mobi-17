@@ -4,6 +4,14 @@ from odoo.osv import expression
 import datetime
 
 
+class HrContractInherit(models.Model):
+    _inherit = 'hr.contract'
+
+    analytic_account_id = fields.Many2one(
+        'account.analytic.account', 'Analytic Account', check_company=True, related="employee_id.cost_center_id",
+        store=True, readonly=False)
+
+
 class HrCluster(models.Model):
     _name = 'hr.cluster'
 
@@ -82,6 +90,18 @@ class MilitaryStatus(models.Model):
     name = fields.Char(required=True)
 
 
+class ResBankCustom(models.Model):
+    _name = 'res.bank.custom'
+
+    name = fields.Char(required=True)
+
+
+class ResPartnerBankCustom(models.Model):
+    _name = 'res.partner.bank.custom'
+
+    name = fields.Char(required=True)
+
+
 class HrDepartmentInherit(models.Model):
     _inherit = 'hr.department'
 
@@ -121,8 +141,8 @@ class HrEmployeeInherit(models.Model):
     arabic_department = fields.Char(copy=False, tracking=True)
     arabic_job_position = fields.Char(copy=False, tracking=True)
     full_name = fields.Char()
-    bank_id = fields.Many2one(comodel_name="res.bank")
-    bank_account_number_id = fields.Many2one(comodel_name="res.partner.bank")
+    bank_id = fields.Many2one(comodel_name="res.bank.custom")
+    bank_account_number_id = fields.Many2one(comodel_name="res.partner.bank.custom")
     # Private Information
     private_address = fields.Char()
     old_id = fields.Char(string="Old ID")
@@ -254,8 +274,7 @@ class HrEmployeeInherit(models.Model):
         return res
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):
         domain = []
         if name:
             domain = ['|', '|', ('employee_attendance_id', '=ilike', name + '%'),
@@ -263,30 +282,33 @@ class HrEmployeeInherit(models.Model):
                       ('name', operator, name)]
             if operator in expression.NEGATIVE_TERM_OPERATORS:
                 domain = ['&'] + domain
-        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+        return super()._name_search(name, domain, operator, limit, order)
 
     @api.onchange('cluster_id')
     def onchange_cluster_id(self):
-        self.character_id = False
-        if self.cluster_id:
-            if len(self.cluster_id.character_ids) == 1:
-                self.character_id = self.cluster_id.character_ids[0].id
-        self.onchange_character_id()
+        for rec in self:
+            rec.character_id = False
+            if rec.cluster_id:
+                if rec.cluster_id.character_ids:
+                    rec.character_id = rec.cluster_id.character_ids[0].id
+            rec.onchange_character_id()
 
     @api.onchange('character_id')
     def onchange_character_id(self):
-        self.title_id = False
-        if self.character_id:
-            if len(self.character_id.title_ids) == 1:
-                self.title_id = self.character_id.title_ids[0].id
-        self.onchange_title_id()
+        for rec in self:
+            rec.title_id = False
+            if rec.character_id:
+                if rec.character_id.title_ids:
+                    rec.title_id = rec.character_id.title_ids[0].id
+            rec.onchange_title_id()
 
     @api.onchange('title_id')
     def onchange_title_id(self):
-        self.character_level_id = False
-        if self.title_id:
-            if len(self.title_id.character_level_ids) == 1:
-                self.character_level_id = self.title_id.character_level_ids[0].id
+        for rec in self:
+            rec.character_level_id = False
+            if rec.title_id:
+                if rec.title_id.character_level_ids:
+                    rec.character_level_id = rec.title_id.character_level_ids[0].id
 
     @api.constrains('cluster_id')
     def constrains_cluster_id(self):

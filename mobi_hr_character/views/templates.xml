@@ -63,21 +63,21 @@
                             </tree>
                         </field>
                     </page>
-                    <page string="Penalties">
-                        <field name="penalty_ids">
-                            <tree editable="bottom">
-                                <field name="penalty_type"/>
-                                <field name="penalty_date"/>
-                                <field name="penalty_desc"/>
-                                <field name="penalty_action"/>
-                                <field name="penalty_deduct_type"/>
-                                <field name="penalty_deduct_days"/>
-                                <field name="penalty_site"/>
-                                <field name="penalty_note"/>
-                                <field name="responsible_employee_id"/>
-                            </tree>
-                        </field>
-                    </page>
+<!--                    <page string="Penalties">-->
+<!--                        <field name="penalty_ids">-->
+<!--                            <tree editable="bottom">-->
+<!--                                <field name="penalty_type"/>-->
+<!--                                <field name="penalty_date"/>-->
+<!--                                <field name="penalty_desc"/>-->
+<!--                                <field name="penalty_action"/>-->
+<!--                                <field name="penalty_deduct_type"/>-->
+<!--                                <field name="penalty_deduct_days"/>-->
+<!--                                <field name="penalty_site"/>-->
+<!--                                <field name="penalty_note"/>-->
+<!--                                <field name="responsible_employee_id"/>-->
+<!--                            </tree>-->
+<!--                        </field>-->
+<!--                    </page>-->
                     <page string="Excuses">
                         <group string="Excuses">
                             <field name="number_excuse_month"/>
@@ -150,28 +150,23 @@
                     <xpath expr="//field[@name='job_id']" position="move"/>
                     <br/>
                 </xpath>
-                <xpath expr="//group/group" position="inside">
-                    <field name="is_a_handicap"/>
+                <xpath expr="//field[@name='bank_account_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//page[@name='personal_information']/group/group" position="inside">
-                    <field name="old_id"/>
-                </xpath>
-                <xpath expr="//field[@name='lang']" position="after">
-                    <separator name="finance_work" string="Finance work"/>
-                    <field name="payment_method_id"/>
+                <xpath expr="//field[@name='ssnid']" position="before">
                     <field name="bank_id"/>
                     <field name="bank_account_number_id"/>
-                </xpath>
-                <xpath expr="//div[@id='o_work_employee_container']" position="after">
-                    <group>
-                        <group>
-                            <field name="arabic_department"/>
-                            <field name="arabic_job_position"/>
-                        </group>
-                        <group></group>
-                    </group>
-                </xpath>
-                <xpath expr="//page[@name='personal_information']/group/group[1]" position="inside">
+                    <field name="payment_method_id"/>
+                    <field name="travel_to"/>
+                    <field name="embassy_name"/>
+                    <field name="social_insurance_no"/>
+                    <field name="social_insurance_office"/>
+                    <field name="insurance_start_date"/>
+                    <field name="insurance_end_date"/>
+                    <field name="basic_insurance_salary"/>
+                    <field name="for_vacation_balance"/>
+                    <field name="no_create_allocation_leaves"/>
+                    <field name="employee_category_id"/>
                     <field name="func_id"/>
                     <field name="cluster_id"/>
                     <field name="character_id" options="{'no_create_edit':True,'no_create':True}"
@@ -184,30 +179,47 @@
                            invisible="title_id == False"
                            domain="[('title_id','=',title_id)]"/>
                 </xpath>
-                <xpath expr="//field[@name='spouse_birthdate']" position="after">
-                    <field name="spouse"/>
-                    <field name="spouse_complete_name"/>
-<!--                    <field name="spouse_birthdate_employee"/>-->
+                <xpath expr="//page[@name='personal_information']/group/group" position="inside">
+                    <field name="old_id"/>
+                </xpath>
+                <xpath expr="//field[@name='lang']" position="after">
+                    <separator name="finance_work" string="Finance work"/>
+                </xpath>
+                <xpath expr="//div[@id='o_work_employee_container']" position="after">
+                    <group>
+                        <group>
+                            <field name="employee_attendance_id" readonly="1"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']/group/group[5]" position="attributes">
+                    <attribute name="string">Citizenship / Other Information</attribute>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']/group/group[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='gender']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+<!--                <xpath expr="//field[@name='region']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='marital']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='children']" position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//page[@name='personal_information']/group" position="inside">
                     <group>
-                        <separator name="insurance" string="Insurance"/>
-                        <field name="social_insurance_no"/>
-                        <field name="social_insurance_office"/>
-                        <field name="insurance_start_date"/>
-                        <field name="insurance_end_date"/>
-                        <field name="basic_insurance_salary"/>
-                        <field name="for_vacation_balance"/>
-                        <field name="no_create_allocation_leaves"/>
                         <separator name="others" string="Others"/>
-                        <field name="person_type"/>
                         <field name="opex_cogs"/>
                         <field name="region"/>
                         <field name="people_group_id"/>
-                    </group>
-                    <group>
                         <field name="grade_id"/>
                         <field name="hire_date"/>
+                        <field name="organisation_id"/>
                         <field name="assignment_number"/>
                         <field name="project_id"/>
                         <field name="sub_project"/>
@@ -215,9 +227,21 @@
                         <field name="account_analytic_Tag_id"/>
                         <field name="first_hire_date"/>
                         <field name="division_id"/>
-                        <field name="employee_documents"/>
-                        <field name="additional_note"/>
-                        <field name="home_phone"/>
+                    </group>
+                    <group>
+                        <separator name="status" string="Status"/>
+                        <field name="gender"/>
+                        <field name="military_status_id"/>
+                        <field name="military_start_date"/>
+                        <field name="military_end_date"/>
+                        <field name="military_card_number"/>
+                        <field name="military_description"/>
+                        <field name="person_type"/>
+                        <field name="marital"/>
+                        <field name="spouse"/>
+                        <field name="spouse_complete_name"/>
+                        <field name="spouse_birthdate_employee"/>
+                        <field name="children"/>
                     </group>
                 </xpath>
                 <xpath expr="//group[@name='application_group']" position="after">
