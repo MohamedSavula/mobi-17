@@ -78,11 +78,10 @@ class ProjectProjectInherit(models.Model):
             if project_code:
                 raise UserError('Project code duplicated')
 
-    @api.depends('name', 'project_code')
     def name_get(self):
         res = []
         for record in self:
-            name = "[%s]%s" % (record.project_code or "", record.name)
+            name = "[%s]%s" % (record.project_code or "", record.display_name)
             res.append((record.id, name))
         return res
 
