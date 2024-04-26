@@ -51,6 +51,12 @@ class ResCompanyInherit(models.Model):
                                     string="Product Tags")
 
 
+class AccountJournalInherit(models.Model):
+    _inherit = 'account.journal'
+
+    is_exclude = fields.Boolean()
+
+
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
@@ -68,10 +74,11 @@ class AccountMoveInherit(models.Model):
     @api.constrains('date')
     def constrains_open_date(self):
         for rec in self:
-            if rec.company_id.all_users_start_date and rec.company_id.all_users_end_date:
-                if not rec.company_id.all_users_end_date >= rec.date >= rec.company_id.all_users_start_date:
-                    raise UserError(_('You cannot set a lock date in the future.'))
-            elif rec.company_id.journal_entries_start_date and rec.company_id.journal_entries_end_date and self.user_has_groups(
-                    'account.group_account_manager'):
-                if not rec.company_id.journal_entries_end_date >= rec.date >= rec.company_id.journal_entries_start_date:
-                    raise UserError(_('You cannot set a lock date in the future.'))
+            if not rec.journal_id.is_exclude:
+                if rec.company_id.all_users_start_date and rec.company_id.all_users_end_date:
+                    if not rec.company_id.all_users_end_date >= rec.date >= rec.company_id.all_users_start_date:
+                        raise UserError(_('You cannot set a lock date in the future.'))
+                elif rec.company_id.journal_entries_start_date and rec.company_id.journal_entries_end_date and self.user_has_groups(
+                        'account.group_account_manager'):
+                    if not rec.company_id.journal_entries_end_date >= rec.date >= rec.company_id.journal_entries_start_date:
+                        raise UserError(_('You cannot set a lock date in the future.'))

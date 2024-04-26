@@ -59,10 +59,13 @@
                 <xpath expr="//header" position="inside">
                     <field name="state" widget="statusbar"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="project_code"/>
-                    <xpath expr="//page[@name='settings']/group/group/field[@name='analytic_account_id']" position="move"/>
-                    <field name="analytic_plan_id"/>
+<!--                    <xpath expr="//page[@name='settings']/group/group/field[@name='analytic_account_id']" position="move"/>-->
+<!--                    <field name="analytic_plan_id"/>-->
                     <field name="analytic_tag_ids" widget="many2many_tags"/>
                     <xpath expr="//field[@name='tag_ids']" position="move"/>
                     <field name="expected_cost_analytic"/>

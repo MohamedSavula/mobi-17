@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="id_view_account_journal_form_inherit_add_is_exclude" model="ir.ui.view">
+            <field name="name">view_account_journal_form_inherit_add_is_exclude</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="is_exclude"/>
+                </xpath>
+            </field>
+        </record>
         <record id="id_res_config_settings_view_form_inherit_add_open_date" model="ir.ui.view">
             <field name="name">res_config_settings_view_form_inherit_add_open_date</field>
             <field name="model">res.config.settings</field>
