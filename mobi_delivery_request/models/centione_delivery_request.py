@@ -242,7 +242,7 @@ class CentioneDeliveryRequest(models.Model):
                 'transfer_bool': True,
                 'picking_type_id': rec.picking_type_id.id,
                 'location_id': rec.picking_type_id.default_location_src_id.id,
-                'location_dest_id': rec.project_id.analytic_account_id.wip_location_id.id if rec.project_id.state == 'in_progres' else rec.project_id.analytic_account_id.cost_location_id.id,
+                'location_dest_id': rec.project_id.analytic_account_id.wip_location_id.id if rec.project_id.state in ['draft', 'in_progres'] else rec.project_id.analytic_account_id.cost_location_id.id,
                 'origin': rec.name,
             }
             sale_order_obj = self.env['stock.picking'].create(item_vals)
@@ -438,7 +438,7 @@ class StockPicking(models.Model):
                 for line in delivery_request.delivery_lines_ids:
                     for operation in rec.move_line_ids_without_package:
                         if line.product_id == operation.product_id:
-                            line.transfer_qty_done = operation.qty_done
+                            line.transfer_qty_done = operation.quantity
         return result
 
 
