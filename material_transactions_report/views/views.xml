@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_material_transactions_report" model="ir.actions.report">
+            <field name="name">Material Transactions</field>
+            <field name="model">material_transactions.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">material_transactions_report.template_mt</field>
+            <field name="report_file">material_transactions_report.template_mt</field>
+            <field name="print_report_name">"Material Transactions Report"</field>
+            <field name="binding_model_id" ref="material_transactions_report.model_material_transactions_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="id_material_transactions_wizard_wizard_form" model="ir.ui.view">
+            <field name="name">material_transactions.wizard.form</field>
+            <field name="model">material_transactions.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Material Transactions Wizard">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export Xlsx" name="export_material_transactions" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="id_material_transactions_wizard_wizard_action" model="ir.actions.act_window">
+            <field name="name">Material Transactions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">material_transactions.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p>
+                    <!-- Add Text Here -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="id_material_transactions_reporting" name="Reporting"
+                  parent="mobi_delivery_request.delivery_request_root_menu" sequence="99"/>
+        <menuitem id="id_material_transactions_wizard_wizard_menu"
+                  parent="id_material_transactions_reporting"
+                  action="id_material_transactions_wizard_wizard_action" sequence="1"/>
+    </data>
+</odoo>
