@@ -52,11 +52,12 @@ class ReportVatGetR(models.AbstractModel):
             sheet.write(row, 8, 'Quantity Requested', format1)
             sheet.write(row, 9, 'Transaction Quantity', format1)
             sheet.write(row, 10, 'Unit Cost', format1)
-            sheet.write(row, 11, 'Project No', format1)
+            sheet.write(row, 11, 'Total Requested', format1)
+            sheet.write(row, 12, 'Project No', format1)
+            sheet.write(row, 13, 'Requested Description', format1)
             centione_delivery_request = self.env['centione.delivery.request'].search(
                 [('create_date', '>=', rec.date_from), ('create_date', '<=', rec.date_to)])
             no = 0
-            print("centione_delivery_request", centione_delivery_request)
             for delivery_request in centione_delivery_request.delivery_lines_ids:
                 row += 1
                 no += 1
@@ -74,8 +75,12 @@ class ReportVatGetR(models.AbstractModel):
                 sheet.write(row, 8, delivery_request.qty or "", format2)
                 sheet.write(row, 9, delivery_request.transfer_qty_done or "", format2)
                 if transfer.date_done:
-                    sheet.write(row, 10, delivery_request.product_id.with_context(
-                        to_date=transfer.date_done).standard_price or "", format2)
+                    unit_cost = delivery_request.product_id.with_context(
+                        to_date=transfer.date_done).standard_price
+                    sheet.write(row, 10, unit_cost or "", format2)
                 else:
+                    unit_cost = 0
                     sheet.write(row, 10, "", format2)
-                sheet.write(row, 11, delivery_request.request_id.project_id.project_code or "", format2)
+                sheet.write(row, 11, unit_cost * delivery_request.qty or "", format2)
+                sheet.write(row, 12, delivery_request.request_id.project_id.project_code or "", format2)
+                sheet.write(row, 13, delivery_request.request_id.description or "", format2)

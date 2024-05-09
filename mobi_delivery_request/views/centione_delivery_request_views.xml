@@ -120,9 +120,9 @@
                         <field name="project_id" invisible="is_internal == True" readonly="state != 'draft'"
                                required="is_internal == False"/>
                         <field name="location_id" readonly="state != 'draft'"/>
-<!--                        <field name="account_analytic_account_id" domain="[('project_id', '=', False)]"-->
-<!--                               invisible="is_internal == False" readonly="state != 'draft'"-->
-<!--                               required="is_internal == True"/>-->
+                        <!--                        <field name="account_analytic_account_id" domain="[('project_id', '=', False)]"-->
+                        <!--                               invisible="is_internal == False" readonly="state != 'draft'"-->
+                        <!--                               required="is_internal == True"/>-->
                         <field name="internal_approval_id" invisible="is_internal == False" readonly="state != 'draft'"
                                required="is_internal == True"/>
                         <field name="user_id" invisible="1"/>
@@ -134,23 +134,26 @@
                                 <tree editable="buttom">
                                     <field name="product_id"/>
                                     <field name="received_qty" readonly="1" force_save="1"/>
-                                    <field name="is_received" invisible="1"/>
+                                    <field name="is_received" column_invisible="1"/>
                                     <field name="transfer_qty_done" readonly="1" force_save="1"/>
                                     <field name="difference" force_save="1"/>
                                     <field name="rfq" readonly="1"/>
-                                    <field name="product_type" invisible="1"/>
-                                    <field name="is_pr" invisible="1"/>
+                                    <field name="product_type" column_invisible="1"/>
+                                    <field name="is_pr" column_invisible="1"/>
                                     <field name="qty"/>
                                     <field name="on_hand" string="Qty On Hand"/>
                                     <field name="uom_id"/>
-                                    <button name="action_open_line" string="Receive"
-                                            invisible="is_pr == False or (product_type == 'service' and is_received == True)"
-                                            type="object"/>
-                                    <field name="request_id" invisible="1"/>
-                                    <field name="is_manager" invisible="1"/>
-                                    <field name="state" invisible="1"/>
-                                    <field name="is_service" invisible="1"/>
-                                    <field name="is_approved2" invisible="1"/>
+                                    <button type="action" name="%(request_quotation_action)d"
+                                            string="Purchase Request"
+                                            invisible = "rfq > 0 or difference == 0"/>
+                                    <button name="%(receive_confirmation_action)d" string="Receive"
+                                            invisible = "product_type == 'service' and is_received == True"
+                                            type="action"/>
+                                    <field name="request_id" column_invisible="1"/>
+                                    <field name="is_manager" column_invisible="1"/>
+                                    <field name="state" column_invisible="1"/>
+                                    <field name="is_service" column_invisible="1"/>
+                                    <field name="is_approved2" column_invisible="1"/>
                                 </tree>
                             </field>
                         </page>

@@ -68,7 +68,8 @@
 <!--                            <tree editable="bottom">-->
 <!--                                <field name="penalty_type"/>-->
 <!--                                <field name="penalty_date"/>-->
-<!--                                <field name="penalty_desc"/>-->
+<!--                                <field
+name="penalty_desc"/>-->
 <!--                                <field name="penalty_action"/>-->
 <!--                                <field name="penalty_deduct_type"/>-->
 <!--                                <field name="penalty_deduct_days"/>-->
