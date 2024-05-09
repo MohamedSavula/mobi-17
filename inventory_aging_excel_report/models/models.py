@@ -64,9 +64,6 @@ class InventoryAgingWizard(models.TransientModel):
 
     def action_inventory_aging_search(self):
         lines = []
-        # my_products = self.env['product.product'].search([('type', '=', 'product')])
-        # my_products1 = self.env['product.product'].search_count([('type', '=', 'product')])
-        # print('all products > ', my_products1)
         products = []
         move_product = self.env['account.move.line'].search([
             ('account_id.code', '=', '100700002'),
@@ -74,28 +71,19 @@ class InventoryAgingWizard(models.TransientModel):
             ('date', '<=', self.date),
         ])
         products_move = move_product.mapped('product_id')
-
-        # product_stocks = []
-        # stock_inventory = self.env['stock.inventory'].search([('id', '=', 7)])
-        # for stock in stock_inventory.move_ids:
-        #     product_stocks.append(stock.product_id)
         product_stock_move = self.env['stock.move'].search([], order='id asc')
         product_stocks = product_stock_move.mapped('product_id')
-        # print('product_stocks >> ', product_stocks)
         all_product = []
         for product in product_stocks:
             all_product.append(product)
         for product in products_move:
             all_product.append(product)
-        # print('all_product >> ', all_product)
         all_product_set = list(set(all_product))
-        # print(len(all_product_set))
         for prod in all_product_set:
             prod.moving_type = ''
             prod.days = ''
             prod.price = ''
             prod.unit_cost_price = ''
-            # prod.standard_price = ''
             prod.picking_date_done = ''
             prod.picking_date_issuance = ''
             prod.po_currency_id = ''
@@ -115,7 +103,7 @@ class InventoryAgingWizard(models.TransientModel):
                 ('location_dest_id.is_internal_location', '=', True)
             ])
             for move in moves_in:
-                qty_in += move.qty_done
+                qty_in += move.quantity
             moves_out = self.env['stock.move.line'].search([
                 ('product_id', '=', prod.id),
                 ('state', '=', 'done'),
@@ -123,7 +111,7 @@ class InventoryAgingWizard(models.TransientModel):
                 ('location_id.is_internal_location', '=', True)
             ])
             for move in moves_out:
-                qty_out += move.qty_done
+                qty_out += move.quantity
             internal_qty = qty_in - qty_out
             prod.internal_qty = internal_qty
             # if internal_qty > 0:
@@ -269,7 +257,7 @@ class InventoryAgingWizard(models.TransientModel):
                 if str(year) == str(move_year):
                     stock_move_line_last_year.append(mov)
             for mov1 in stock_move_line_last_year:
-                qty += mov1.qty_done
+                qty += mov1.quantity
             prod.qty_last_year = qty
 
         # -------------------------------------------------------------#
@@ -277,7 +265,6 @@ class InventoryAgingWizard(models.TransientModel):
             for product in products:
                 if product.internal_qty > 0:
                     lines.append(product)
-
             act = self.generate_excel(lines, all_product)
 
             return {
@@ -288,7 +275,6 @@ class InventoryAgingWizard(models.TransientModel):
                 'context': self.env.context,
                 'target': 'new',
             }
-
         else:
             raise UserError(_('No Item for This '))
 
@@ -364,6 +350,7 @@ class InventoryAgingWizard(models.TransientModel):
         col = 0
         # balance = 0
         #new by thomas
+        print("2222222222222", product_ids)
         for product in product_ids:
             percentage_value = 0
             if total_value_new > 0 :
@@ -413,7 +400,6 @@ class InventoryAgingWizard(models.TransientModel):
                 stock_move = self.env['stock.move'].search([
                     ('product_id', '=', all_pr.id)
                 ], limit=1)
-                print('stock_move', stock_move.name)
                 account_move_line = self.env['account.move.line'].search([
                     ('account_id.code', '=', '100700002'),
                     ('product_id', '=', all_pr.id),
