@@ -108,61 +108,62 @@ class CentioneProcessRequest(models.TransientModel):
             return True
 
 
-class ReceiveConfirmation(models.TransientModel):
-    _name = 'receive.confirmation'
-    _description = 'Receive Confirmation'
-
-    received_amount = fields.Float('Quantity')
-
-    
-    def confirm_transferring(self):
-        self.ensure_one()
-        delivery_request_line = self.env['centione.delivery.request.line'].browse(self.env.context.get('active_id'))
-        if self.received_amount > delivery_request_line.qty:
-            raise ValidationError(
-                "Sorry, That Is Invalid Quantity : Received Quantity Cannot Exceed Requested Quantity")
-        # if not delivery_request_line.request_id.analytic_account_id.wip_location_id:
-        #     raise ValidationError("Sorry, There Is No Location Assigned To Analytic Account")
-
-        picking_type = delivery_request_line.product_id.picking_type_second_id.id
-        if picking_type:
-            total_recieved_amount = delivery_request_line.received_amount + self.received_amount
-            if total_recieved_amount > delivery_request_line.qty:
-                raise ValidationError(_('Received Qty Is Greater Than The Requested Qty'))
-            delivery_request_line.received_amount = total_recieved_amount
-            delivery_request_line.receive_line_function()
-            values = {
-                'location_id': delivery_request_line.broker_warehouse.id,
-                'location_dest_id': delivery_request_line.request_id.analytic_account_id.wip_location_id.id,
-                'move_type': 'one',
-                'picking_type_id': picking_type,
-                'priority': '1',
-                'state': 'draft',
-                'origin': delivery_request_line.request_id.name,
-                'min_date': fields.Datetime.now(),
-                'name': '/',
-                'analytic_account_id': delivery_request_line.request_id.analytic_account_id.id,
-                'move_lines': [[0, False, {
-                    'date_expected': fields.Datetime.now(),
-                    'product_uom': delivery_request_line.uom_id.id,
-                    'product_id': delivery_request_line.product_id.id,
-                    'name': delivery_request_line.product_id.name,
-                    'picking_type_id': picking_type,
-                    'product_uom_qty': self.received_amount,
-                    'ordered_qty': self.received_amount,
-                    'qty_done': self.received_amount,
-                    'quantity_done': self.received_amount,
-                    'reserved_availability': self.received_amount,
-                    'state': 'draft'
-                }]]
-            }
-
-            picking = self.env['stock.picking'].create(values)
-            for move in picking.move_lines:
-                move.qty_done = move.product_uom_qty
-                move.reserved_availability = move.product_uom_qty
-            picking.button_validate()
-            return True
-        # else:
-        #     raise ValidationError(
-        #         "There Is No 'Picking Type' Assigned To The Warehouse Of Location Of Analytic Account")
+# class ReceiveConfirmation(models.TransientModel):
+#     _name = 'receive.confirmation'
+#     _description = 'Receive Confirmation'
+#
+#     received_amount = fields.Float('Quantity')
+#
+#
+#     def confirm_transferring(self):
+#         print("2222222222222")
+#         self.ensure_one()
+#         delivery_request_line = self.env['centione.delivery.request.line'].browse(self.env.context.get('active_id'))
+#         if self.received_amount > delivery_request_line.qty:
+#             raise ValidationError(
+#                 "Sorry, That Is Invalid Quantity : Received Quantity Cannot Exceed Requested Quantity")
+#         # if not delivery_request_line.request_id.analytic_account_id.wip_location_id:
+#         #     raise ValidationError("Sorry, There Is No Location Assigned To Analytic Account")
+#
+#         picking_type = delivery_request_line.product_id.picking_type_second_id.id
+#         if picking_type:
+#             total_recieved_amount = delivery_request_line.received_amount + self.received_amount
+#             if total_recieved_amount > delivery_request_line.qty:
+#                 raise ValidationError(_('Received Qty Is Greater Than The Requested Qty'))
+#             delivery_request_line.received_amount = total_recieved_amount
+#             delivery_request_line.receive_line_function()
+#             values = {
+#                 'location_id': delivery_request_line.broker_warehouse.id,
+#                 'location_dest_id': delivery_request_line.request_id.analytic_account_id.wip_location_id.id,
+#                 'move_type': 'one',
+#                 'picking_type_id': picking_type,
+#                 'priority': '1',
+#                 'state': 'draft',
+#                 'origin': delivery_request_line.request_id.name,
+#                 'min_date': fields.Datetime.now(),
+#                 'name': '/',
+#                 'analytic_account_id': delivery_request_line.request_id.analytic_account_id.id,
+#                 'move_lines': [[0, False, {
+#                     'date_expected': fields.Datetime.now(),
+#                     'product_uom': delivery_request_line.uom_id.id,
+#                     'product_id': delivery_request_line.product_id.id,
+#                     'name': delivery_request_line.product_id.name,
+#                     'picking_type_id': picking_type,
+#                     'product_uom_qty': self.received_amount,
+#                     'ordered_qty': self.received_amount,
+#                     'qty_done': self.received_amount,
+#                     'quantity_done': self.received_amount,
+#                     'reserved_availability': self.received_amount,
+#                     'state': 'draft'
+#                 }]]
+#             }
+#
+#             picking = self.env['stock.picking'].create(values)
+#             for move in picking.move_lines:
+#                 move.qty_done = move.product_uom_qty
+#                 move.reserved_availability = move.product_uom_qty
+#             picking.button_validate()
+#             return True
+#         # else:
+#         #     raise ValidationError(
+#         #         "There Is No 'Picking Type' Assigned To The Warehouse Of Location Of Analytic Account")
