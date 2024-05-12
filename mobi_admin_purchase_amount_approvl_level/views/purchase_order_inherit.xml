@@ -92,28 +92,33 @@
         <field name="arch" type="xml">
             <xpath expr="//button[1]" position="after">
                 <field name="_1st_approver" invisible="1"/>
+                <field name="is_1st_approver" invisible="1"/>
                 <field name="_2st_approver" invisible="1"/>
+                <field name="is_2st_approver" invisible="1"/>
                 <field name="_3st_approver" invisible="1"/>
+                <field name="is_3st_approver" invisible="1"/>
                 <field name="_4st_approver" invisible="1"/>
+                <field name="is_4st_approver" invisible="1"/>
                 <field name="_5st_approver" invisible="1"/>
+                <field name="is_5st_approver" invisible="1"/>
                 <field name="purchase_amount_user_id" invisible="1"/>
                 <button name="button_1st_approver" type="object" string="Request To Approve"
                         invisible="state != 'draft'"/>
                 <button name="button_2st_approver" type="object" string="Approve"
-                        invisible="&quot;_1st_approver != uid or state != '1st_approve'&quot;"/>
+                        invisible="is_1st_approver == False or state != '1st_approve'"/>
                 <button name="button_3st_approver" type="object" string="Approve"
-                        invisible="&quot;_2st_approver != uid or state != '2st_approve'&quot;"/>
+                        invisible="is_2st_approver == False or state != '2nd_approve'"/>
                 <button name="button_4st_approver" type="object" string="Approve"
-                        invisible="&quot;_3st_approver != uid or state != '3st_approve'&quot;"/>
+                        invisible="is_3st_approver == False or state != '3rd_approve'"/>
                 <button name="button_5st_approver" type="object" string="Approve"
-                        invisible="&quot;_4st_approver != uid or state != '4st_approve'&quot;"/>
+                        invisible="is_4st_approver == False or state != '4th_approve'"/>
             </xpath>
             <xpath expr="//button[@id='draft_confirm']" position="replace">
                 <button name="button_confirm" type="object" string="Confirm Order" id="draft_confirm"
                         invisible="state != 'confirm'"
                         groups="mobi_admin_purchase_amount_approvl_level.group_button_confirm_purchase"/>
                 <button name="button_confirm" type="object" string="Confirm Order"
-                        invisible="&quot;_5st_approver != uid or state != '5st_approve'&quot;"/>
+                        invisible="is_5st_approver == uid or state != '5th_approve'"/>
             </xpath>
             <xpath expr="//field[@name='currency_id']" position="after">
                 <field name="filted_purchase_log" widget="many2many_tags"/>

@@ -127,14 +127,54 @@ class PurchaseOrder(models.Model):
     # user_id = fields.Many2one(related="purchase_amount_user_id.user_id", store=True)
     _1st_approver = fields.Many2one(related="purchase_amount_user_id._1st_approver", store=True,
                                     comodel_name='res.users')
+    is_1st_approver = fields.Boolean(compute="check_is_1st_approver")
     _2st_approver = fields.Many2one(related="purchase_amount_user_id._2st_approver", store=True,
                                     comodel_name='res.users')
+    is_2st_approver = fields.Boolean(compute="check_is_2st_approver")
     _3st_approver = fields.Many2one(related="purchase_amount_user_id._3st_approver", store=True,
                                     comodel_name='res.users')
+    is_3st_approver = fields.Boolean(compute="check_is_3st_approver")
     _4st_approver = fields.Many2one(related="purchase_amount_user_id._4st_approver", store=True,
                                     comodel_name='res.users')
+    is_4st_approver = fields.Boolean(compute="check_is_4st_approver")
     _5st_approver = fields.Many2one(related="purchase_amount_user_id._5st_approver", store=True,
                                     comodel_name='res.users')
+    is_5st_approver = fields.Boolean(compute="check_is_5st_approver")
+
+    @api.depends('name')
+    def check_is_1st_approver(self):
+        for rec in self:
+            rec.is_1st_approver = False
+            if self.env.user.id == rec._1st_approver.id:
+                rec.is_1st_approver = True
+
+    @api.depends('name')
+    def check_is_2st_approver(self):
+        for rec in self:
+            rec.is_2st_approver = False
+            if self.env.user.id == rec._2st_approver.id:
+                rec.is_2st_approver = True
+
+    @api.depends('name')
+    def check_is_3st_approver(self):
+        for rec in self:
+            rec.is_3st_approver = False
+            if self.env.user.id == rec._3st_approver.id:
+                rec.is_3st_approver = True
+
+    @api.depends('name')
+    def check_is_4st_approver(self):
+        for rec in self:
+            rec.is_4st_approver = False
+            if self.env.user.id == rec._4st_approver.id:
+                rec.is_4st_approver = True
+
+    @api.depends('name')
+    def check_is_5st_approver(self):
+        for rec in self:
+            rec.is_5st_approver = False
+            if self.env.user.id == rec._5st_approver.id:
+                rec.is_5st_approver = True
 
     @api.depends('amount_total')
     def get_purchase_amount_user_id(self):
