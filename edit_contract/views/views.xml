@@ -6,15 +6,19 @@
             <field name="model">hr.contract</field>
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='wage']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
                 <xpath expr="//group[@name='salary_info']" position="after">
                     <group>
                         <group>
                             <field name="is_insured"/>
-                            <field name="fixed_insurance"/>
+                            <field name="fixed_insurance" readonly="1" force_save="1"/>
                             <field name="variable_insurance"/>
                             <field name="average_variables_of_previous_year"/>
                             <field name="is_employer"/>
-                            <field name="bank_wage"/>
+                            <field name="bank_wage" readonly="1" force_save="1"/>
                             <field name="cash_wage"/>
                         </group>
                         <group>

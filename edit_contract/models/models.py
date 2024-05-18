@@ -34,3 +34,23 @@ class HrContract(models.Model):
     previous_special_bonus = fields.Monetary()
     special_bonus = fields.Monetary()
     medical_upgrade = fields.Float()
+
+    @api.onchange('basic_salary', 'fixed_other_allowance', 'fixed_transportation_allowance', 'natural_allowance',
+                  'previous_special_bonus')
+    def get_wage_sum(self):
+        for rec in self:
+            rec.wage = (rec.basic_salary + rec.fixed_other_allowance + rec.fixed_transportation_allowance +
+                        rec.natural_allowance + rec.previous_special_bonus)
+
+    @api.onchange('basic_salary', 'fixed_other_allowance', 'fixed_transportation_allowance', 'natural_allowance',
+                  'previous_special_bonus', 'special_bonus', 'labour_allowance')
+    def get_fixed_insurance_sum(self):
+        for rec in self:
+            rec.fixed_insurance = (rec.basic_salary + rec.fixed_other_allowance + rec.fixed_transportation_allowance +
+                                   rec.natural_allowance + rec.previous_special_bonus +
+                                   rec.special_bonus + rec.labour_allowance)
+
+    @api.onchange('wage', 'cash_wage')
+    def get_bank_wage(self):
+        for rec in self:
+            rec.bank_wage = rec.wage - rec.cash_wage

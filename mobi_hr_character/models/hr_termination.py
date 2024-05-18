@@ -50,8 +50,7 @@ class HrTermination(models.Model):
         legal_leaves_days = 0
         termination_date = self.termination_date
         leave_types = self.env['hr.leave.type'].search(
-            [('validity_start', '<=', termination_date), '|', ('validity_stop', '>=', termination_date),
-             ('validity_stop', '=', False)])
+            [])
         for it in leave_types:
             if it.end_service_incentive:
                 remaining_balance_raw = it.get_days(employee_id.id)
@@ -73,16 +72,17 @@ class HrTermination(models.Model):
                 if loan.total_unpaid != 0:
                     raise ValidationError(_('Please Check The Loans Of This Employee'))
 
-        self.employee_id.state = 'terminated'
+        # self.employee_id.state = 'terminated'
         wage_per_day = self.employee_id.contract_id.wage / 30.0
-        legal_leaves_days = self.get_total_legal_leaves_days(self.employee_id)
+        # legal_leaves_days = self.get_total_legal_leaves_days(self.employee_id)
+        legal_leaves_days = self.employee_id.leaves_count
 
         self.legal_leaves_incentive = wage_per_day * legal_leaves_days
         self.end_incentive += self.legal_leaves_incentive
 
         # cancel all employee's contracts
         self.employee_id.contract_id.date_end = self.termination_date
-        self.employee_id.contract_id.end_incentive = self.end_incentive
+        # self.employee_id.contract_id.end_incentive = self.end_incentive
 
         for contract in self.employee_id.contract_ids:
             if contract.state != 'cancel' and contract.state != 'close':
