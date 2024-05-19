@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <record id="hr_Get_Loan_Rule" model="hr.salary.rule">-->
+<!--        <field name="name">Loan Rule</field>-->
+<!--        <field name="sequence" eval="85"/>-->
+<!--        <field name="code">LOAN</field>-->
+<!--        <field name="category_id" ref="hr_payroll.DED"/>-->
+<!--        <field name="condition_select">none</field>-->
+<!--        <field name="amount_select">code</field>-->
+<!--        <field name="amount_python_compute">-->
+<!--loan_amount=0-->
+<!--if payslip.loan_lines_ids:-->
+<!--    loan_amount = sum((one_loan_line.amount - one_loan_line.paid_amount) for one_loan_line in payslip.loan_lines_ids)-->
+<!--result = -1 * loan_amount-->
+<!--        </field>-->
+<!--        <field name="condition_select">python</field>-->
+<!--        <field name="condition_python">-->
+<!--loan_amount=0-->
+<!--if payslip.loan_lines_ids:-->
+<!--    loan_amount = sum((one_loan_line.amount - one_loan_line.paid_amount) for one_loan_line in payslip.loan_lines_ids)-->
+<!--result = -1 * loan_amount-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="hr_get_short_loan_rule" model="hr.salary.rule">-->
+<!--        <field name="name">Loan Short Rule Term</field>-->
+<!--        <field name="sequence" eval="82"/>-->
+<!--        <field name="code">SHORTLOAN</field>-->
+<!--        <field name="category_id" ref="hr_payroll.DED"/>-->
+<!--        <field name="condition_select">none</field>-->
+<!--        <field name="amount_select">code</field>-->
+<!--        <field name="amount_python_compute">result =-1 * employee.rule_short_term(payslip)</field>-->
+<!--    </record>-->
+
+<!--    <record id="hr_get_long_Loan_rule" model="hr.salary.rule">-->
+<!--        <field name="name">Loan Long Rule Term</field>-->
+<!--        <field name="sequence" eval="90"/>-->
+<!--        <field name="code">LONGLOAN</field>-->
+<!--        <field name="category_id" ref="hr_payroll.DED"/>-->
+<!--        <field name="condition_select">none</field>-->
+<!--        <field name="amount_select">code</field>-->
+<!--        <field name="amount_python_compute">result =-1 * employee.rule_long_term(payslip)</field>-->
+<!--    </record>-->
+
+</odoo>

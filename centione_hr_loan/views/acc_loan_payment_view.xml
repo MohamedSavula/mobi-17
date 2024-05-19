@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+        <record id="view_loan_payment_form" model="ir.ui.view">
+            <field name="name">Payment Loan Request</field>
+            <field name="model">loan.payment</field>
+            <field name="arch" type="xml">
+                <form string="Payment Loan Request">
+                    <header>
+                        <button name="%(centione_hr_loan.view_acc_loan_payment_wizard_action)d"
+                                string="Request Payment" type="action" class="oe_highlight"
+                                invisible="state == 'closed'"
+                        />
+                        <field name="state" widget="statusbar"/>
+
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Loan Details">
+                                <field name="desc" readonly="1"/>
+                                <field name="req_amount" readonly="1"/>
+                                <field name="req_date" readonly="1"/>
+                            </group>
+                            <group string="Employee Info">
+                                <field name="employee_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="loan_installment_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_loan_payment_tree" model="ir.ui.view">
+            <field name="name">Payment Loan Requests</field>
+            <field name="model">loan.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Payment Loan Requests">
+                    <field name="name"/>
+                    <field name="desc"/>
+                    <field name="employee_id"/>
+                    <field name="req_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <menuitem id="loan_requests_menuitem" name="Loans" parent="account.menu_finance_entries"/>
+
+        <!--Menuitem of requested Loans Payments-->
+
+        <record id="view_loan_payment_action" model="ir.actions.act_window">
+            <field name="name">Payment Loan Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">loan.payment</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="view_loan_payment_menuitem" parent="loan_requests_menuitem" action="view_loan_payment_action"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+edit_payroll.access_hr_insurance_year,access_hr_insurance_year,edit_payroll.model_hr_insurance_year,base.group_user,1,1,1,1
+edit_payroll.access_board_member,access_board_member,edit_payroll.model_board_member,base.group_user,1,1,1,1
+edit_payroll.access_board_member_line,access_board_member_line,edit_payroll.model_board_member_line,base.group_user,1,1,1,1
+edit_payroll.access_hr_suspended,access_hr_suspended,edit_payroll.model_hr_suspended,base.group_user,1,1,1,1
