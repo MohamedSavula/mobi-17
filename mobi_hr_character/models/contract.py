@@ -23,3 +23,4 @@ class HrContractInherit(models.Model):
     total_loan_short_term_budget = fields.Float()
     number_of_salary_long_term = fields.Float(string="Number Of Salary Multipliers for Long Term")
     total_loan_long_term_budget = fields.Float()
+    end_incentive = fields.Float(string="End of Service Incentive")

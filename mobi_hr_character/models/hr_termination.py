@@ -82,7 +82,7 @@ class HrTermination(models.Model):
 
         # cancel all employee's contracts
         self.employee_id.contract_id.date_end = self.termination_date
-        # self.employee_id.contract_id.end_incentive = self.end_incentive
+        self.employee_id.contract_id.end_incentive = self.end_incentive
 
         for contract in self.employee_id.contract_ids:
             if contract.state != 'cancel' and contract.state != 'close':

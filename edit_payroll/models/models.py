@@ -77,10 +77,10 @@ class HrPayslipRun(models.Model):
                                                                       limit=1)
         ratio = insurance_fixed_config and (insurance_fixed_config.employer_ratio / 100.0) or 0.21
         if record:
-            sheet.write(row, col + 1, record.title or '', font_size_10)
-            sheet.write(row, col + 3, str(record.social_insurance_s_date) or '', font_size_10)
             for line in record.board_member_ids:
                 sheet.write(row, col, line.name or '', font_size_10)
+                sheet.write(row, col + 1, line.title or '', font_size_10)
+                sheet.write(row, col + 3, str(line.social_insurance_s_date) or '', font_size_10)
                 if insurance_fixed_config:
                     max_insurance_amount = insurance_fixed_config.insurance_amount_max
                     min_insurance_amount = insurance_fixed_config.insurance_amount_min

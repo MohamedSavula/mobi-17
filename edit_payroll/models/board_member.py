@@ -10,8 +10,6 @@ class BoardMember(models.Model):
 
     board_member_ids = fields.One2many("board.member.line", 'board_member_id')
     done = fields.Boolean()
-    social_insurance_s_date = fields.Date(string="social insurance start date", required=False, )
-    title = fields.Char(string="", required=False, )
 
     def _default_year(self):
         today = datetime.today()
@@ -58,3 +56,5 @@ class BoardMemberLine(models.Model):
     amount = fields.Float(required=True)
     board_member_id = fields.Many2one('board.member', ondelete="cascade")
     opex_cogs = fields.Selection([('opex', 'Opex'), ('cogs', 'Cogs')])
+    social_insurance_s_date = fields.Date(string="social insurance start date", required=False, )
+    title = fields.Char(string="", required=False, )
