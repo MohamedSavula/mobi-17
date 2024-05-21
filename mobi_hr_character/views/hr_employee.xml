@@ -132,6 +132,7 @@
                                     <tree editable="bottom">
                                         <field name="name"/>
                                         <field name="birth_date"/>
+                                        <field name="relative_relation"/>
                                     </tree>
                                 </field>
                             </page>
@@ -193,8 +194,12 @@
             <field name="act_window_id" ref="action_medical_life_hr_employee"/>
         </record>
 
+        <menuitem id="menu_medical_life_hr_employee_main"
+                  name="Medical Life Insurance Employee"
+        />
         <menuitem id="menu_medical_life_hr_employee"
                   action="action_medical_life_hr_employee"
+                  parent="menu_medical_life_hr_employee_main"
                   name="Medical Life Insurance Employee"
         />
 
@@ -206,18 +211,18 @@
         <menuitem id="menu_custom_hr_medical_insurance"
                   action="view_hr_medical_insurance"
                   name="Medical Insurance"
-                  parent="menu_medical_life_hr_employee"
+                  parent="menu_medical_life_hr_employee_main"
         />
         <menuitem id="menu_custom_hr_life_insurance"
                   action="view_hr_life_insurance"
                   name="Life Insurance"
-                  parent="menu_medical_life_hr_employee"
+                  parent="menu_medical_life_hr_employee_main"
         />
 
         <menuitem id="menu_custom_hr_insurance_company"
                   action="view_hr_insurance_company"
                   name="Insurance Company"
-                  parent="menu_medical_life_hr_employee"
+                  parent="menu_medical_life_hr_employee_main"
         />
     </data>
 </odoo>

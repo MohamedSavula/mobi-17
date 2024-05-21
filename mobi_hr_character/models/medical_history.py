@@ -297,7 +297,7 @@ class HrEmployeeMedicalLine(models.Model):
 
     employee_id = fields.Many2one('hr.employee')
     medical_id = fields.Many2one('hr.medical.insurance', domain=[('state', '=', 'open')])
-    medical_grade_id = fields.Many2one('hr.medical.insurance.lines', domain=[('medical_id', '=', False)])
+    medical_grade_id = fields.Many2one('hr.medical.insurance.lines', domain="[('medical_id', '=', medical_id)]")
     date_from = fields.Date(related='medical_id.date_from')
     date_to = fields.Date(related='medical_id.date_to')
     follower_ids = fields.Many2many('hr.employee.follower', domain="[('employee_id', '=', employee_id)]")
@@ -358,15 +358,18 @@ class HrEmployeeFollower(models.Model):
     name = fields.Char()
     employee_id = fields.Many2one('hr.employee')
     birth_date = fields.Date()
+    relative_relation = fields.Selection([('spouse', 'Spouse'), ('child', 'Child')],
+                                         'Relative Relation')
 
 
 class HrEmployeeLifeLine(models.Model):
     _name = 'hr.employee.life.line'
     _description = "HrEmployeeLifeLine"
+    _rec_name = 'life_id'
 
     employee_id = fields.Many2one('hr.employee')
     life_id = fields.Many2one('hr.life.insurance', domain=[('state', '=', 'open')])
-    life_grade_id = fields.Many2one('hr.life.insurance.lines', domain=[('life_id', '=', False)])
+    life_grade_id = fields.Many2one('hr.life.insurance.lines', domain="[('life_id', '=', life_id)]")
     date_from = fields.Date(related='life_id.date_from')
     date_to = fields.Date(related='life_id.date_to')
     follower_ids = fields.Many2many('hr.employee.follower', domain="[('employee_id', '=', employee_id)]")

@@ -131,6 +131,7 @@ name="penalty_desc"/>-->
                             <tree editable="bottom">
                                 <field name="name"/>
                                 <field name="birth_date"/>
+                                <field name="relative_relation"/>
                             </tree>
                         </field>
                     </page>
