@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="id_payment_view_inherit_is_advance" model="ir.ui.view">
+            <field name="name">payment_view_inherit_is_advance</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_type']" position="after">
+                    <field name="partner_id" string="employee"
+                           invisible="is_petty_cash == False"/>
+                    <field name="is_advance"/>
+                </xpath>
+                <xpath expr="//field[@name='is_internal_transfer']" position="after">
+                    <field name="is_petty_cash" invisible="is_internal_transfer == False"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="id_view_account_journal_form_inherit_add_is_petty" model="ir.ui.view">
+            <field name="name">view_account_journal_form_inherit_add_is_petty</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="is_petty_cash"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

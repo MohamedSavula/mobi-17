@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+reconcile_payment_invoice.access_select_invoice_reconcile,access_select_invoice_reconcile,reconcile_payment_invoice.model_select_invoice_reconcile,base.group_user,1,1,1,1
