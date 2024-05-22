@@ -23,6 +23,7 @@ class AccountMoveInherit(models.Model):
     total_price_vat = fields.Monetary(compute='get_total_price_vat')
     total_untaxed_amount = fields.Monetary(compute='get_total_untaxed_amount')
     paid_amount_reconcile = fields.Monetary(compute="_compute_payments_widget_reconciled_info")
+    comment_note = fields.Char()
 
     @api.onchange('sale_id')
     def _get_sale_line(self):

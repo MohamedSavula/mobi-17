@@ -40,6 +40,9 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="comment_note"/>
+                </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
                     <attribute name="width">400%</attribute>
                 </xpath>

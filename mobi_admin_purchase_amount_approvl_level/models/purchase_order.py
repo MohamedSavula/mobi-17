@@ -93,12 +93,12 @@ class ResPartner(models.Model):
         for rec in self:
             vat = self.search(
                 [('vat', '=', rec.vat),
-                 ('vat', '!=', False), ('id', '!=', rec.id)])
+                 ('vat', '!=', False), ('id', '!=', rec.id), ('id', '!=', rec.parent_id.id)])
             if vat:
                 raise UserError('tax registration duplicate')
             vat_number = self.search(
                 [('vat_number', '=', rec.vat_number),
-                 ('vat_number', '!=', False), ('id', '!=', rec.id)])
+                 ('vat_number', '!=', False), ('id', '!=', rec.id), ('id', '!=', rec.parent_id.id)])
             if vat_number:
                 raise UserError('Vat number duplicate')
 
