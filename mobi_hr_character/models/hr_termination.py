@@ -69,7 +69,7 @@ class HrTermination(models.Model):
         if 'hr.loan' in self.env:
             loans = self.env['hr.loan'].search([('employee_id', '=', self.employee_id.id)])
             for loan in loans:
-                if loan.total_unpaid != 0:
+                if loan.total_unpaid != 0 and loan.state not in ['draft', 'cancel', 'closed']:
                     raise ValidationError(_('Please Check The Loans Of This Employee'))
 
         # self.employee_id.state = 'terminated'
