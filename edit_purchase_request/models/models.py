@@ -20,6 +20,16 @@ _STATES = [
 ]
 
 
+class PurchaseRequestLineMakePurchaseOrderInherit(models.TransientModel):
+    _inherit = "purchase.request.line.make.purchase.order"
+
+    @api.model
+    def _prepare_purchase_order(self, picking_type, group_id, company, origin):
+        res = super()._prepare_purchase_order(picking_type, group_id, company, origin)
+        if self.item_ids:
+            res['project_id'] = self.item_ids[0].request_id.project_id.id
+        return res
+
 class CategoryDepartment(models.Model):
     _name = 'category.department'
 

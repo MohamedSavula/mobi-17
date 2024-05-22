@@ -81,7 +81,7 @@ class StockMoveLine(models.Model):
 
             # We do sudo because potentially the user that completes the move
             #  may not have permissions for purchase.request.
-            to_allocate_qty = ml.qty_done
+            to_allocate_qty = ml.quantity
             to_allocate_uom = ml.product_uom_id
             for allocation in ml.move_id.purchase_request_allocation_ids.sudo():
                 allocated_qty = 0.0
