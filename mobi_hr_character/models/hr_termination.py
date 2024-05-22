@@ -53,9 +53,9 @@ class HrTermination(models.Model):
             [])
         for it in leave_types:
             if it.end_service_incentive:
-                remaining_balance_raw = it.get_days(employee_id.id)
+                remaining_balance_raw = it.get_allocation_data(employee_id)
                 for rb in remaining_balance_raw:
-                    legal_leaves_days += remaining_balance_raw[rb].get('remaining_leaves')
+                    legal_leaves_days += remaining_balance_raw[rb][0][1].get('remaining_leaves')
         return legal_leaves_days
 
     def action_approved(self):
@@ -74,9 +74,9 @@ class HrTermination(models.Model):
 
         # self.employee_id.state = 'terminated'
         wage_per_day = self.employee_id.contract_id.wage / 30.0
-        # legal_leaves_days = self.get_total_legal_leaves_days(self.employee_id)
-        legal_leaves_days = self.employee_id.leaves_count
+        legal_leaves_days = self.get_total_legal_leaves_days(self.employee_id)
 
+        # legal_leaves_days = self.employee_id.leaves_count
         self.legal_leaves_incentive = wage_per_day * legal_leaves_days
         self.end_incentive += self.legal_leaves_incentive
 

@@ -7,13 +7,13 @@
             <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='allocation_validation']" position="inside">
-                    <field name="is_legal_leaves"/>
-                    <field name="is_unpaid"/>
+                    <field name="is_legal_leaves" invisible="1"/>
+                    <field name="is_unpaid" invisible="1"/>
                     <field name="consume_weekends"/>
                     <field name="is_carried_over"/>
-                    <field name="public_holiday"/>
+                    <field name="public_holiday" invisible="1"/>
                     <field name="end_service_incentive"/>
-                    <field name="apply_double_validation"/>
+                    <field name="apply_double_validation" invisible="1"/>
                     <field name="transfer_from"/>
                     <field name="transfer_to"/>
                     <field name="open_carried_over"/>
