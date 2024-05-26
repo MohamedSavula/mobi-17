@@ -1,0 +1,106 @@
+<odoo>
+    <data noupdate="1">
+        <record id="allocation_leaves" model="ir.cron">
+            <field name="name">Allocation leaves</field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="nextcall"
+                   eval="DateTime(2021,1,1).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="code">model.create_allocations()</field>
+            <field name="state">code</field>
+        </record>
+
+
+        <record id="check_allocations" model="ir.cron">
+            <field name="name">Check Allocations</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="nextcall"
+                   eval="DateTime(2021,1,1).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="code">model.check_allocations()</field>
+            <field name="state">code</field>
+        </record>
+    </data>
+    <data>
+
+        <record id="allocation_depend_hire_date" model="ir.cron">
+            <field name="name">Allocation leaves Depend On Hire Date</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="code">model.create_allocations_hire_date()</field>
+            <field name="state">code</field>
+        </record>
+
+
+        <record id="hr_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="mobi_hr_character.hr_employee_form_inherit"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='insurance_end_date']" position="after">
+                    <field name="old_insurance_years"/>
+                    <field name="create_allocation_leaves"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="allocation_action_refuse">
+            <field name="name">Refuse</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_allocation"/>
+            <field name="binding_model_id" ref="hr_holidays.model_hr_leave_allocation"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">
+                for item in records:
+                item.action_refuse()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="allocation_action_draft">
+            <field name="name">Draft</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_allocation"/>
+            <field name="binding_model_id" ref="hr_holidays.model_hr_leave_allocation"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">
+                for item in records:
+                item.action_draft()
+            </field>
+        </record>
+
+        <record id="leave_type_form_inherit" model="ir.ui.view">
+            <field name="name">hr.leave.type.form</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group[@name='negative_cap']" position="after">
+                    <group string="Validation">
+                        <field name="auto_every_year"/>
+                        <field name="number_of_days" invisible="depend_on_age == True"/>
+                        <field name="depend_on_age"/>
+                        <field name="six_months_of_hire_date"/>
+                        <field name="number_of_days_more_than_50_year" invisible="depend_on_age == False"/>
+                        <field name="number_of_days_less_than_50_year" invisible="depend_on_age == False"/>
+                    </group>
+                    <group string="Validity" invisible="auto_every_year == False">
+                        <field name="start_date" invisible="auto_every_year == False"/>
+                        <field name="end_date" invisible="auto_every_year == False"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

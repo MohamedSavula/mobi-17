@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mobi_allocation_leaves_auto_mobi_allocation_leaves_auto,mobi_allocation_leaves_auto.mobi_allocation_leaves_auto,model_mobi_allocation_leaves_auto_mobi_allocation_leaves_auto,,1,0,0,0
