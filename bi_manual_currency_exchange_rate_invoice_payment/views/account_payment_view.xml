@@ -30,13 +30,13 @@
                 <label for="amount" position="attributes">
                 	<attribute name="invisible">1</attribute>
                 </label>
-                <div name="amount_div" position="before">
-                	<label for="amount_currency" string="Amount"/>
-                </div>
-                <field name="amount" position="after">
-                	<field name="amount_currency" readonly="state != 'draft'"/>
-                    
-                </field>
+<!--                <div name="amount_div" position="before">-->
+<!--                	<label for="amount_currency" string="Amount"/>-->
+<!--                </div>-->
+<!--                <field name="amount" position="after">-->
+<!--                	<field name="amount_currency" readonly="state != 'draft'"/>-->
+<!--                    -->
+<!--                </field>-->
             </field>
         </record>
     </data>

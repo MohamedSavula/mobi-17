@@ -14,7 +14,6 @@ class AccountMoveInherit(models.Model):
     residual_amount_reconcile = fields.Float(compute="get_residual_amount_reconcile", store=True, readonly=False)
     is_tax = fields.Boolean()
 
-
     @api.constrains('ref')
     def check_ref_uniqe(self):
         for rec in self:
@@ -126,18 +125,16 @@ class SelectInvoiceReconcile(models.Model):
             total_liens = sum(invoices.mapped('amount_reconcile'))
             if total_liens > rec.partials_amount:
                 raise UserError(_("Total reconcile must be %s" % rec.partials_amount))
-            print("0000000000000000", rec.payment_id.destination_account_id.name)
             payment_line = rec.payment_id.line_ids.filtered(
                 lambda l: l.account_id == rec.payment_id.destination_account_id)
-            print("111111111111111", payment_line)
             for invoice in invoices:
-                print("22222222222222222", invoice.account_id.name)
                 invoice_line = invoice.line_ids.filtered(lambda l: l.account_id == invoice.account_id)
-                print("33333333333333333", invoice_line)
-                (payment_line | invoice_line).create_journal_entry_reconcile(invoice.amount_reconcile,
-                                                                             invoice.residual_amount_reconcile,
-                                                                             rec.account_tax_id, rec.journal_tax_id)
-                print("444444444444444444")
+                if payment_line.account_id == invoice.account_id:
+                    (payment_line | invoice_line).with_context(reduced_line_sorting=True).reconcile()
+                else:
+                    (payment_line | invoice_line).create_journal_entry_reconcile(invoice.amount_reconcile,
+                                                                                 invoice.residual_amount_reconcile,
+                                                                                 rec.account_tax_id, rec.journal_tax_id)
 
 
 class AccountMoveLineInherit(models.Model):
@@ -188,15 +185,18 @@ class AccountMoveLineInherit(models.Model):
             new_entry.action_post()
             new_entry.payment_id = payment_id.id
         move_lines = self | new_entry.line_ids
-        print("5555555555555555", destination_account_id.name)
-        move_lines.filtered(lambda l: l.account_id == destination_account_id).with_context(reduced_line_sorting=True).reconcile()
-        print("666666666666666666", account_id.name)
-        move_lines.filtered(lambda l: l.account_id == account_id).with_context(reduced_line_sorting=True).reconcile()
-        print("7777777777777777777777")
-        invoice_id.payment_reconcile_id = [(4, payment_id.id)]
-        print("8888888888888888")
         if invoice_line.move_id.is_tax and residual_amount_reconcile > 0:
-            print("9999999999999999999")
+            invoice_line.move_id.invoice_line_ids = [(0, 0, {
+                'name': "Withholding",
+                'price_withholding': -residual_amount_reconcile,
+                'account_id': self.env['account.account'].sudo().search([('is_withholding', '=', True)], limit=1).id,
+                'tax_ids': False,
+            })]
+        move_lines.filtered(lambda l: l.account_id == destination_account_id).with_context(
+            reduced_line_sorting=True).reconcile()
+        move_lines.filtered(lambda l: l.account_id == account_id).with_context(reduced_line_sorting=True).reconcile()
+        invoice_id.payment_reconcile_id = [(4, payment_id.id)]
+        if invoice_line.move_id.is_tax and residual_amount_reconcile > 0:
             if not journal_tax_id or not account_tax_id:
                 raise UserError(_("Please add account tax and journal tax"))
             new_entry_tax = self.env['account.move'].sudo().create({
@@ -220,9 +220,3 @@ class AccountMoveLineInherit(models.Model):
             new_entry_tax.payment_id = payment_id.id
             (invoice_line | new_entry_tax.line_ids.filtered(
                 lambda l: l.account_id == invoice_line.account_id)).with_context(reduced_line_sorting=True).reconcile()
-            invoice_line.move_id.invoice_line_ids = [(0, 0, {
-                'name': "Withholding",
-                'price_withholding': -residual_amount_reconcile,
-                'account_id': 258,
-                'tax_ids': False,
-            })]
