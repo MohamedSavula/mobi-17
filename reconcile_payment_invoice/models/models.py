@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import ast
 from odoo import models, fields, _, api
 from odoo.exceptions import UserError
 
@@ -13,68 +14,6 @@ class AccountMoveInherit(models.Model):
     residual_amount_reconcile = fields.Float(compute="get_residual_amount_reconcile", store=True, readonly=False)
     is_tax = fields.Boolean()
 
-    def _compute_payments_widget_to_reconcile_info(self):
-        for move in self:
-            move.invoice_outstanding_credits_debits_widget = False
-            move.invoice_has_outstanding = False
-
-            if move.state != 'posted' \
-                    or move.payment_state not in ('not_paid', 'partial') \
-                    or not move.is_invoice(include_receipts=True):
-                continue
-
-            pay_term_lines = move.line_ids \
-                .filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
-
-            domain = [
-                ('account_id', 'in', pay_term_lines.account_id.ids),
-                ('parent_state', '=', 'posted'),
-                ('partner_id', '=', move.commercial_partner_id.id),
-                ('reconciled', '=', False),
-                '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
-            ]
-
-            payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
-
-            if move.is_inbound():
-                domain.append(('balance', '<', 0.0))
-                payments_widget_vals['title'] = _('Outstanding credits')
-            else:
-                domain.append(('balance', '>', 0.0))
-                payments_widget_vals['title'] = _('Outstanding debits')
-
-            for line in self.env['account.move.line'].search(domain):
-
-                if line.currency_id == move.currency_id:
-                    # Same foreign currency.
-                    amount = abs(line.amount_residual_currency)
-                else:
-                    # Different foreign currencies.
-                    amount = line.company_currency_id._convert(
-                        abs(line.amount_residual),
-                        move.currency_id,
-                        move.company_id,
-                        line.date,
-                    )
-
-                if move.currency_id.is_zero(amount):
-                    continue
-
-                payments_widget_vals['content'].append({
-                    'journal_name': line.move_id.name,
-                    'amount': amount,
-                    'currency_id': move.currency_id.id,
-                    'id': line.id,
-                    'move_id': line.move_id.id,
-                    'date': fields.Date.to_string(line.date),
-                    'account_payment_id': line.payment_id.id,
-                })
-
-            if not payments_widget_vals['content']:
-                continue
-
-            move.invoice_outstanding_credits_debits_widget = payments_widget_vals
-            move.invoice_has_outstanding = True
 
     @api.constrains('ref')
     def check_ref_uniqe(self):
@@ -120,25 +59,18 @@ class AccountPaymentInherit(models.Model):
         '''
         self.ensure_one()
         if not self.is_advance:
-            if not self.partner_id:
-                raise UserError(_("Payments without a customer can't be matched"))
-
-            liquidity_lines, counterpart_lines, writeoff_lines = self._seek_for_lines()
-
-            action_context = {'company_ids': self.company_id.ids, 'partner_ids': self.partner_id.ids}
-            if self.partner_type == 'customer':
-                action_context.update({'mode': 'customers'})
-            elif self.partner_type == 'supplier':
-                action_context.update({'mode': 'suppliers'})
-
-            if counterpart_lines:
-                action_context.update({'move_line_id': counterpart_lines[0].id})
-
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'manual_reconciliation_view',
-                'context': action_context,
-            }
+            self.ensure_one()
+            action_values = self.env['ir.actions.act_window']._for_xml_id(
+                'account_accountant.action_move_line_posted_unreconciled')
+            if self.partner_id:
+                context = ast.literal_eval(action_values['context'])
+                context.update({'search_default_partner_id': self.partner_id.id})
+                if self.partner_type == 'customer':
+                    context.update({'search_default_trade_receivable': 1})
+                elif self.partner_type == 'supplier':
+                    context.update({'search_default_trade_payable': 1})
+                action_values['context'] = context
+            return action_values
         else:
             return {
                 'type': 'ir.actions.act_window',
@@ -194,13 +126,18 @@ class SelectInvoiceReconcile(models.Model):
             total_liens = sum(invoices.mapped('amount_reconcile'))
             if total_liens > rec.partials_amount:
                 raise UserError(_("Total reconcile must be %s" % rec.partials_amount))
+            print("0000000000000000", rec.payment_id.destination_account_id.name)
             payment_line = rec.payment_id.line_ids.filtered(
                 lambda l: l.account_id == rec.payment_id.destination_account_id)
+            print("111111111111111", payment_line)
             for invoice in invoices:
+                print("22222222222222222", invoice.account_id.name)
                 invoice_line = invoice.line_ids.filtered(lambda l: l.account_id == invoice.account_id)
+                print("33333333333333333", invoice_line)
                 (payment_line | invoice_line).create_journal_entry_reconcile(invoice.amount_reconcile,
                                                                              invoice.residual_amount_reconcile,
                                                                              rec.account_tax_id, rec.journal_tax_id)
+                print("444444444444444444")
 
 
 class AccountMoveLineInherit(models.Model):
@@ -251,11 +188,15 @@ class AccountMoveLineInherit(models.Model):
             new_entry.action_post()
             new_entry.payment_id = payment_id.id
         move_lines = self | new_entry.line_ids
-        move_lines.filtered(lambda l: l.account_id == destination_account_id).with_context(
-            reduced_line_sorting=True).reconcile()
+        print("5555555555555555", destination_account_id.name)
+        move_lines.filtered(lambda l: l.account_id == destination_account_id).with_context(reduced_line_sorting=True).reconcile()
+        print("666666666666666666", account_id.name)
         move_lines.filtered(lambda l: l.account_id == account_id).with_context(reduced_line_sorting=True).reconcile()
+        print("7777777777777777777777")
         invoice_id.payment_reconcile_id = [(4, payment_id.id)]
+        print("8888888888888888")
         if invoice_line.move_id.is_tax and residual_amount_reconcile > 0:
+            print("9999999999999999999")
             if not journal_tax_id or not account_tax_id:
                 raise UserError(_("Please add account tax and journal tax"))
             new_entry_tax = self.env['account.move'].sudo().create({

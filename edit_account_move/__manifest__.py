@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account', 'account_accountant', 'sale', 'purchase', 'edit_sale', 'project_detalse', 'bi_manual_currency_exchange_rate_invoice_payment'],
+    'depends': ['base', 'account', 'account_accountant', 'sale', 'purchase', 'edit_sale', 'project_detalse'],
 
     # always loaded
     'data': [

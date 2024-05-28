@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="id_lock_date_group" model="res.groups">
+            <field name="name">Lock Date</field>
+        </record>
         <record id="id_view_account_journal_form_inherit_add_is_exclude" model="ir.ui.view">
             <field name="name">view_account_journal_form_inherit_add_is_exclude</field>
             <field name="model">account.journal</field>
@@ -91,7 +94,7 @@
             </field>
         </record>
         <menuitem id="id_open_date_menu" parent="account.menu_finance_entries_actions" action="id_open_date_action"
-                  sequence="56"/>
+                  sequence="56" groups="open_date.id_lock_date_group"/>
         <menuitem id="account_accountant.menu_action_change_lock_date" active="False"/>
     </data>
 </odoo>

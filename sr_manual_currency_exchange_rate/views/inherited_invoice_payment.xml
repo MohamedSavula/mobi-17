@@ -11,7 +11,7 @@
                    ref="account.view_account_payment_form"/>
             <field name="arch" type="xml">
                 <field name="journal_id" position="after">
-                    <field name="active_manual_currency_rate" invisible="1"></field>
+                    <field name="active_manual_currency_rate" invisible="1"/>
                     <field name="apply_manual_currency_exchange"
                            invisible="apply_manual_currency_exchange == False"/>
                     <field name="manual_currency_exchange_rate"
@@ -21,9 +21,9 @@
                            required="apply_manual_currency_exchange == True "
                     />
                 </field>
-                <xpath expr="//field[@name='date']" position="after">
-                    <field name="currency_id"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='date']" position="after">-->
+<!--                    <field name="currency_id"/>-->
+<!--                </xpath>-->
                 <xpath expr="//header" position="inside">
                     <button name="update_rate_in_journal" type="object" string="Update Rate In Journal"/>
                 </xpath>
