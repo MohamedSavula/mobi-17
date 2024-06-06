@@ -24,6 +24,7 @@ class AccountMoveInherit(models.Model):
     total_untaxed_amount = fields.Monetary(compute='get_total_untaxed_amount')
     paid_amount_reconcile = fields.Monetary(compute="_compute_payments_widget_reconciled_info")
     comment_note = fields.Char()
+    is_accrued = fields.Boolean(copy=False)
 
     @api.onchange('sale_id')
     def _get_sale_line(self):
@@ -153,9 +154,8 @@ class AccountMoveInherit(models.Model):
                 # new code
                 move.paid_amount_reconcile = move.amount_total - move.amount_residual + move.total_price_withholding
                 for paid_amount_reconcile in reconciled_vals:
-                    if self._context.get('name_payment') == paid_amount_reconcile.get('ref', False):
-                        move.paid_amount_reconcile = paid_amount_reconcile.get('amount',
-                                                                               0) + move.total_price_withholding
+                    if self.env.context.get('name_payment') in paid_amount_reconcile.get('ref', False):
+                        move.paid_amount_reconcile = paid_amount_reconcile.get('amount',0) + move.total_price_withholding
                 # end new code
             if payments_widget_vals['content']:
                 move.invoice_payments_widget = payments_widget_vals
@@ -272,6 +272,14 @@ class AccountMoveLineInherit(models.Model):
         check_company=True,
         tracking=True,
     )
+
+    @api.onchange('product_id')
+    def get_account_is_accrued(self):
+        for rec in self:
+            if rec.move_id.is_accrued:
+                account_accrued = self.env['account.account'].search([('is_accrued', '=', True)], limit=1)
+                if account_accrued:
+                    rec.account_id = account_accrued.id
 
     @api.onchange('product_id', 'account_id')
     def get_analytic_account(self):

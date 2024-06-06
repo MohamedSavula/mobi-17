@@ -28,6 +28,17 @@
                 </xpath>
             </field>
         </record>
+        <!--        # account.move.line-->
+        <record id="id_view_account_payment_form_inherit_account_accountant_inherit" model="ir.ui.view">
+            <field name="name">view_account_payment_form_inherit_account_accountant_inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account_accountant.view_account_payment_form_inherit_account_accountant"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_open_manual_reconciliation_widget']" position="attributes">
+                    <attribute name="invisible">(is_reconciled and not is_advance) or state != 'posted'</attribute>
+                </xpath>
+            </field>
+        </record>
         <!--        # select.invoice.reconcile.form-->
         <record id="id_select_invoice_reconcile_form" model="ir.ui.view">
             <field name="name">select.invoice.reconcile.form</field>

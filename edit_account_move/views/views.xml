@@ -162,6 +162,7 @@
                     <field name="account_id"
                            invisible="move_type not in ['out_invoice', 'in_invoice', 'in_refund', 'out_refund']"
                            required="move_type in ['out_invoice', 'in_invoice']"/>
+                    <field name="is_accrued" invisible="move_type not in ['out_invoice']"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='account_id']" position="before">
                     <field name="is_account_asset" column_invisible="1"/>

@@ -74,7 +74,7 @@
                     <field name="payment_check_lines" invisible="1"/>
                     <button class="oe_stat_button" name="button_check_lines" string="Checks" type="object"
                             groups="account.group_account_user"
-                            invisible="payment_check_lines == []"
+                            invisible="is_check_journal == False"
                             icon="fa-bars"/>
                 </xpath>
             </field>

@@ -37,7 +37,7 @@ class AccountPaymentInherit(models.Model):
                 rec.destination_journal_id = self.env['account.journal'].sudo().search([('is_petty_cash', '=', True)],
                                                                                        limit=1).id
 
-    @api.onchange('is_advance', 'partner_id', 'currency_id')
+    @api.onchange('is_advance', 'partner_id', 'currency_id', 'journal_id')
     def get_account_from_partner(self):
         for rec in self:
             if rec.is_advance and rec.partner_id:

@@ -128,9 +128,10 @@ class AccountPayment(models.Model):
 
                 if counterpart_lines.account_id.account_type == 'asset_receivable':
                     partner_type = 'customer'
-                else:
+                elif counterpart_lines.account_id.account_type == 'liability_payable':
                     partner_type = 'supplier'
-
+                else:
+                    partner_type=self.partner_type
                 liquidity_amount = liquidity_lines.amount_currency
 
                 move_vals_to_write.update({
