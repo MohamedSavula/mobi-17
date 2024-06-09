@@ -154,7 +154,7 @@ class AccountMoveInherit(models.Model):
                 # new code
                 move.paid_amount_reconcile = move.amount_total - move.amount_residual + move.total_price_withholding
                 for paid_amount_reconcile in reconciled_vals:
-                    if self.env.context.get('name_payment') in paid_amount_reconcile.get('ref', False):
+                    if self.env.context.get('name_payment') and self.env.context.get('name_payment') in paid_amount_reconcile.get('ref', False):
                         move.paid_amount_reconcile = paid_amount_reconcile.get('amount',0) + move.total_price_withholding
                 # end new code
             if payments_widget_vals['content']:
