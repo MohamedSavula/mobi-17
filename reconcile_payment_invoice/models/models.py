@@ -186,9 +186,11 @@ class AccountMoveLineInherit(models.Model):
             new_entry.payment_id = payment_id.id
         move_lines = self | new_entry.line_ids
         if invoice_line.move_id.is_tax and residual_amount_reconcile > 0:
+            price_withholding = payment_line.currency_id._convert(residual_amount_reconcile, invoice_id.currency_id, fields.Date.today(), round=False)
+
             invoice_line.move_id.invoice_line_ids = [(0, 0, {
                 'name': "Withholding",
-                'price_withholding': residual_amount_reconcile,
+                'price_withholding': price_withholding,
                 'account_id': self.env['account.account'].sudo().search([('is_withholding', '=', True)], limit=1).id,
                 'tax_ids': False,
             })]
