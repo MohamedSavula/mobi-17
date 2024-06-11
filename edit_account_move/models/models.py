@@ -87,11 +87,11 @@ class AccountMoveInherit(models.Model):
                 if rec.move_type in ['in_invoice',
                                      'in_refund'] and rec.partner_id.petty_cash_holder and rec.partner_id.journal_id:
                     rec.journal_id = rec.partner_id.journal_id.id
-                if rec.move_type in ['in_invoice', 'in_refund']:
-                    rec.account_id = rec.partner_id.property_account_payable_id.id
+                if rec.move_type in ['in_invoice', 'in_refund']  and not rec.account_id:
+                    rec.account_id =rec.account_id.id or rec.partner_id.property_account_payable_id.id
                     rec.account_ids = self.get_account_ids_from_partner()
-                elif rec.move_type in ['out_invoice', 'out_refund']:
-                    rec.account_id = rec.partner_id.property_account_receivable_id.id
+                elif rec.move_type in ['out_invoice', 'out_refund'] and not rec.account_id:
+                    rec.account_id = rec.account_id.id or rec.partner_id.property_account_receivable_id.id
                     rec.account_ids = self.get_account_ids_from_partner()
 
     @api.onchange('currency_id')
@@ -292,6 +292,8 @@ class AccountMoveLineInherit(models.Model):
     @api.constrains('price_withholding', 'account_id')
     def get_price_withholding(self):
         for rec in self:
+            if rec.state =='posted':
+                return True
             if rec.price_withholding and not rec.is_price_withholding:
                 if rec.account_id.is_withholding:
                     rec.price_unit = -rec.price_withholding

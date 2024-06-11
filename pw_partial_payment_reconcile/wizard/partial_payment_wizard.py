@@ -8,7 +8,6 @@ class PartialPaymentWizard(models.TransientModel):
     _name = "partial.payment.wizard"
     _description = 'Partial Payment Wizard'
 
-
     def _default_outstanding_amount(self):
         move_line_id = self.env['account.move.line'].browse(self.env.context.get('line_id'))
         return abs(move_line_id.amount_residual)
