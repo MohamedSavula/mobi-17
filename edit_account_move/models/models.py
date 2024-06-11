@@ -292,7 +292,7 @@ class AccountMoveLineInherit(models.Model):
     @api.constrains('price_withholding', 'account_id')
     def get_price_withholding(self):
         for rec in self:
-            if rec.state =='posted':
+            if rec.parent_state =='posted':
                 return True
             if rec.price_withholding and not rec.is_price_withholding:
                 if rec.account_id.is_withholding:
