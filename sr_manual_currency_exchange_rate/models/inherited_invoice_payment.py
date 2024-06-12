@@ -40,14 +40,14 @@ class AccountPayments(models.Model):
                 rec.move_id.manual_currency_exchange_rate_x = rec.manual_currency_exchange_rate_x
                 rec.move_id.get_manual_currency_exchange_rate()
 
-    @api.constrains('payment_check_lines', 'manual_currency_exchange_rate_x')
-    def get_check_amount(self):
-        for rec in self:
-            for line in rec.payment_check_lines:
-                if rec.manual_currency_exchange_rate_x != 0:
-                    line.check_amount_after_rate = line.check_amount * rec.manual_currency_exchange_rate_x
-                else:
-                    line.check_amount_after_rate = line.check_amount
+    # @api.constrains('payment_check_lines', 'manual_currency_exchange_rate_x')
+    # def get_check_amount(self):
+    #     for rec in self:
+    #         for line in rec.payment_check_lines:
+    #             if rec.manual_currency_exchange_rate_x != 0:
+    #                 line.check_amount_after_rate = line.check_amount * rec.manual_currency_exchange_rate_x
+    #             else:
+    #                 line.check_amount_after_rate = line.check_amount
 
     def write(self, vals):
         # OVERRIDE

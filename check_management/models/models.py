@@ -48,7 +48,7 @@ class PaymentCheckLine(models.Model):
     check_date = fields.Date(required=True)
     due_date = fields.Date(string="Due Date", required=False, )
     check_amount = fields.Float(string="Check Amount", required=True)
-    check_bank_id = fields.Many2one('res.bank', string="Bank Name", required=True)
+    check_bank_id = fields.Many2one('res.bank', string="Bank Name", required=False)
     bank_branch = fields.Char(string="Bank Branch")
     partner_id = fields.Many2one('res.partner', string="Partner Name", related="payment_id.partner_id", store=True)
     custody_id = fields.Many2one('res.partner', string="Custody")
