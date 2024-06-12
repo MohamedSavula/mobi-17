@@ -13,7 +13,7 @@
                 <field name="journal_id" position="after">
                     <field name="active_manual_currency_rate" invisible="1"/>
                     <field name="apply_manual_currency_exchange"
-                           invisible="apply_manual_currency_exchange == False"/>
+                           invisible="active_manual_currency_rate == False"/>
                     <field name="manual_currency_exchange_rate"
                            invisible="1"/>
                     <field name="manual_currency_exchange_rate_x"
