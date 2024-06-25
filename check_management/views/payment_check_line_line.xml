@@ -104,7 +104,7 @@
                                     <field name="check_number" required="1"/>
                                     <field name="check_date" required="1"/>
                                     <field name="check_amount" required="1" sum="Total"/>
-                                    <field name="check_bank_id" required="1"/>
+                                    <field name="check_bank_id" required="0"/>
                                     <field name="bank_branch"/>
                                     <field name="custody_id"/>
                                     <field name="with_drawer_name"/>
@@ -154,7 +154,7 @@
                                     <field name="check_number" required="1"/>
                                     <field name="check_date" required="1"/>
                                     <field name="check_amount" required="1" sum="Total"/>
-                                    <field name="check_bank_id" required="1"/>
+                                    <field name="check_bank_id" required="0"/>
                                     <field name="bank_branch"/>
                                     <field name="custody_id"/>
                                     <field name="with_drawer_name"/>
