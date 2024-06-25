@@ -152,11 +152,14 @@ class AccountMoveInherit(models.Model):
                     })
                 payments_widget_vals['content'] = reconciled_vals
                 # new code
-                move.paid_amount_reconcile = move.amount_total - move.amount_residual + move.total_price_withholding
+                tree_invoice = True
                 for paid_amount_reconcile in reconciled_vals:
                     if 'WHtax' not in paid_amount_reconcile.get('ref', False) and 'WTR' not in paid_amount_reconcile.get('ref', False):
                         if self.env.context.get('name_payment') and self.env.context.get('name_payment') in paid_amount_reconcile.get('ref', False):
-                            move.paid_amount_reconcile = paid_amount_reconcile.get('amount',0)
+                            tree_invoice = False
+                            move.paid_amount_reconcile += paid_amount_reconcile.get('amount',0)
+                if tree_invoice:
+                    move.paid_amount_reconcile = move.amount_total - move.amount_residual + move.total_price_withholding
                 # end new code
             if payments_widget_vals['content']:
                 move.invoice_payments_widget = payments_widget_vals
