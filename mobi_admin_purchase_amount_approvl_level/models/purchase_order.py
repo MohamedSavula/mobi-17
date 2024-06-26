@@ -39,6 +39,7 @@ class AccountAccountInherit(models.Model):
 
     is_customer = fields.Boolean(copy=False)
     is_vendor = fields.Boolean(copy=False)
+    is_advance = fields.Boolean(copy=False)
     petty_cash_holder = fields.Boolean(copy=False)
 
 
@@ -72,6 +73,7 @@ class ResPartner(models.Model):
             res.contact_line_ids = [(0, 0, {
                 'partner_id': res.id,
                 'account_id': account.id,
+                'is_approved': True if account.is_advance else False,
             }) for account in accounts]
         elif res.supplier_rank > 0:
             if not res.petty_cash_holder:
@@ -79,12 +81,14 @@ class ResPartner(models.Model):
                 res.contact_line_ids = [(0, 0, {
                     'partner_id': res.id,
                     'account_id': account.id,
+                    'is_approved': True if account.is_advance else False,
                 }) for account in accounts]
             elif res.petty_cash_holder:
                 accounts = self.env['account.account'].sudo().search([('petty_cash_holder', '=', True)])
                 res.contact_line_ids = [(0, 0, {
                     'partner_id': res.id,
                     'account_id': account.id,
+                    'is_approved': True if account.is_advance else False,
                 }) for account in accounts]
         return res
 

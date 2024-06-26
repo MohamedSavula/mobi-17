@@ -26,6 +26,37 @@ class AccountMoveInherit(models.Model):
     comment_note = fields.Char()
     is_accrued = fields.Boolean(copy=False)
 
+    def action_open_business_doc(self):
+        self.ensure_one()
+        if self.id:
+            name = _("Journal Entry")
+            res_model = 'account.move'
+            res_id = self.id
+        elif self.statement_line_id:
+            name = _("Bank Transaction")
+            res_model = 'account.bank.statement.line'
+            res_id = self.statement_line_id.id
+        else:
+            name = _("Payment")
+            res_model = 'account.payment'
+            res_id = self.payment_id.id
+        return {
+            'name': name,
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'res_model': res_model,
+            'res_id': res_id,
+            'target': 'current',
+        }
+
+    def action_post(self):
+        res = super().action_post()
+        for rec in self:
+            if rec.ref:
+                rec.name = rec.ref
+        return res
+
     @api.onchange('sale_id')
     def _get_sale_line(self):
         for rec in self:

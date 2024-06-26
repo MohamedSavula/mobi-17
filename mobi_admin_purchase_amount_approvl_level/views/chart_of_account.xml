@@ -9,6 +9,7 @@
                 <xpath expr="//page[@name='accounting']//group/group" position="inside">
                     <field name="is_customer"/>
                     <field name="is_vendor"/>
+                    <field name="is_advance"/>
                     <field name="petty_cash_holder"/>
                 </xpath>
             </field>
