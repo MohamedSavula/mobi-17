@@ -224,9 +224,9 @@ class mobi_allocation_leaves_auto(models.Model):
     def create_allocations_hire_date(self):
         today = date.today()
         leaves = self.env['hr.leave.type'].search(
-            [('auto_every_year', '=', True), ('validity_start', '<=', today), ('validity_stop', '>=', today)])
+            [('auto_every_year', '=', True), ('start_date', '<=', today), ('end_date', '>=', today)])
         six_months_of_hire_date_leave = self.env['hr.leave.type'].search(
-            [('six_months_of_hire_date', '=', True), ('validity_start', '<=', today), ('validity_stop', '>=', today)],
+            [('six_months_of_hire_date', '=', True), ('start_date', '<=', today), ('end_date', '>=', today)],
             limit=1)
         employees = self.env['hr.employee'].search([('create_allocation_leaves', '=', False)])
         for leave in leaves:
