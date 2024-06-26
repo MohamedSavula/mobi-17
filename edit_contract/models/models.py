@@ -20,6 +20,7 @@ class HrContract(models.Model):
     car_allowance = fields.Float()
     living_subsidy_allowance = fields.Float()
     # salary information
+    is_unpaid_leave = fields.Boolean(string="Is UnPaid Leave")
     is_insured = fields.Boolean(string="Is Insured?", default=True)
     fixed_insurance = fields.Float(string="Insurance Amount")
     variable_insurance = fields.Float(string="Variable Insurance Amount")
