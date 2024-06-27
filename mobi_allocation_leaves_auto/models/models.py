@@ -159,7 +159,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'date_from': datetime(datetime.now().year, 1, 1),
                                     'number_of_days': leave.number_of_days_more_than_50_year,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
                             elif not m.exceeded_50_year():
                                 allocation = self.env['hr.leave.allocation'].create({
                                     'name': leave.name,
@@ -170,7 +170,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'date_from': datetime(datetime.now().year, 1, 1),
                                     'number_of_days': leave.number_of_days_less_than_50_year,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
                     else:
                         if m.exceeded_50_year():
                             allocation = self.env['hr.leave.allocation'].create({
@@ -182,7 +182,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                 'date_from': datetime(datetime.now().year, 1, 1),
                                 'number_of_days': leave.number_of_days_more_than_50_year,
                             })
-                            allocation.action_approve()
+                            allocation.action_validate()
                         elif not m.exceeded_50_year():
                             allocation = self.env['hr.leave.allocation'].create({
                                 'name': leave.name,
@@ -193,7 +193,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                 'date_from': datetime(datetime.now().year, 1, 1),
                                 'number_of_days': leave.number_of_days_less_than_50_year,
                             })
-                            allocation.action_approve()
+                            allocation.action_validate()
 
             else:
                 for m in employees:
@@ -209,7 +209,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                 'date_from': datetime(datetime.now().year, 1, 1),
                                 'number_of_days': leave.number_of_days,
                             })
-                            allocation.action_approve()
+                            allocation.action_validate()
                     else:
                         allocation = self.env['hr.leave.allocation'].create({
                             'name': leave.name,
@@ -219,7 +219,7 @@ class mobi_allocation_leaves_auto(models.Model):
                             'date_from': datetime(datetime.now().year, 1, 1),
                             'number_of_days': leave.number_of_days,
                         })
-                        allocation.action_approve()
+                        allocation.action_validate()
 
     def create_allocations_hire_date(self):
         today = date.today()
@@ -248,7 +248,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                                               datetime.now().day),
                                         'number_of_days': (leave.number_of_days_more_than_50_year / 2)
                                     })
-                                    allocation.action_approve()
+                                    allocation.action_validate()
                                 else:
                                     if m.get_date_of_exceeded():
                                         sum1 = leave.number_of_days_more_than_50_year
@@ -271,7 +271,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                                                   datetime.now().day),
                                             'number_of_days': number_of_days,
                                         })
-                                        allocation.action_approve()
+                                        allocation.action_validate()
                                 sum = leave.number_of_days_more_than_50_year
                                 day_per_month = sum / 12
                                 date_difference = relativedelta(date(date.today().year, 12, 31), date.today())
@@ -287,7 +287,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'number_of_days': number_of_days,
                                     'checked': True,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
 
                             elif not m.exceeded_50_year():
                                 allocation = self.env['hr.leave.allocation'].create({
@@ -300,7 +300,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'number_of_days': leave.number_of_days_less_than_50_year / 2,
                                     'checked': True,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
                                 sum = leave.number_of_days_less_than_50_year
                                 day_per_month = sum / 12
                                 date_difference = relativedelta(date(date.today().year, 12, 31), date.today())
@@ -316,7 +316,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'number_of_days': number_of_days,
                                     'checked': False,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
             else:
                 for m in employees:
                     if m.first_hire_date:
@@ -334,7 +334,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'number_of_days': leave.number_of_days / 2,
                                     'checked': True,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
                                 sum = leave.number_of_days
                                 day_per_month = sum / 12
                                 date_difference = relativedelta(date(date.today().year, 12, 31), date.today())
@@ -350,7 +350,7 @@ class mobi_allocation_leaves_auto(models.Model):
                                     'number_of_days': number_of_days,
                                     'checked': True,
                                 })
-                                allocation.action_approve()
+                                allocation.action_validate()
 
     def check_allocations(self):
         # r=relativedelta(date.today(),date(date.today().year,1,1))
@@ -376,8 +376,7 @@ class mobi_allocation_leaves_auto(models.Model):
                     m.action_draft()
                     m.number_of_days = number_of_days
                     m.checked = True
-                    m.action_confirm()
-                    m.action_approve()
+                    m.action_validate()
                     # leaves = self.env['hr.leave.type'].search(
                     #     [('auto_every_year', '=', True), ('more_than_50_year', '=', True)])
                     sum = 0
@@ -396,4 +395,4 @@ class mobi_allocation_leaves_auto(models.Model):
                         'number_of_days': number_of_days,
                         'checked': True,
                     })
-                    allocation.action_approve()
+                    allocation.action_validate()
