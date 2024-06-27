@@ -5,6 +5,22 @@ from odoo import models, fields, _, api
 from odoo.exceptions import UserError
 
 
+class AccountReconcileWizardInherit(models.TransientModel):
+    _inherit = 'account.reconcile.wizard'
+
+    def reconcile(self):
+        if self.account_id.is_withholding:
+            lines = self.move_line_ids._origin.filtered(lambda line: not line.move_id.payment_id)
+            for line in lines:
+                line.move_id.invoice_line_ids = [(0, 0, {
+                    'name': "Withholding",
+                    'price_withholding': self.amount_currency,
+                    'account_id': self.account_id.id,
+                    'tax_ids': False,
+                })]
+        return super().reconcile()
+
+
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
@@ -186,8 +202,8 @@ class AccountMoveLineInherit(models.Model):
             new_entry.payment_id = payment_id.id
         move_lines = self | new_entry.line_ids
         if invoice_line.move_id.is_tax and residual_amount_reconcile > 0:
-
-            price_withholding = payment_id.currency_id._convert(residual_amount_reconcile, invoice_id.currency_id, self.env.company,fields.Date.today())
+            price_withholding = payment_id.currency_id._convert(residual_amount_reconcile, invoice_id.currency_id,
+                                                                self.env.company, fields.Date.today())
             invoice_line.move_id.invoice_line_ids = [(0, 0, {
                 'name': "Withholding",
                 'price_withholding': price_withholding,
